@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.sql.Date;
 
 @Entity
-@DiscriminatorValue("PROFESSOR")
+@Table(name = "professors")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,10 +17,9 @@ import java.sql.Date;
 public class Professor extends User {
     @Column(unique = true, nullable = false)
     private String registration;
-
-    @Column(nullable = false)
+    private Date birthDate;
     private String expertiseArea;
-
     private String academicTitle;
     private String phone;
+    private String address;
 }

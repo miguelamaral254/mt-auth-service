@@ -33,9 +33,16 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // Adicionando suporte ao CORS
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // Configurando como stateless
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()  // Permite o login sem autenticação
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()  // Permite o registro sem autenticação
-                        .anyRequest().authenticated()  // Exige autenticação para as demais rotas
+                                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()  // Permite o login sem autenticação
+                                .requestMatchers(HttpMethod.POST, "/user/register").permitAll()  // Permite o registro sem autenticação
+                                .requestMatchers(HttpMethod.POST, "/user/register/student").permitAll()  // Permite o registro de student sem autenticação
+                                .requestMatchers(HttpMethod.POST, "/user/register/parent").permitAll()  // Permite o registro de parent sem autenticação
+                                .requestMatchers(HttpMethod.POST, "/user/register/professor").permitAll()  // Permite o registro de professor sem autenticação
+                                .requestMatchers(HttpMethod.GET, "/user/all").permitAll()  // Permite pegar todos os usuários sem autenticação
+                                .anyRequest().authenticated()  // Exige autenticação para as demais rotas
+
+
+                        // TASK 0059: Alterar autorização de acesso à rotas
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);  // Adiciona o filtro antes da autenticação padrão
 
@@ -45,10 +52,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));  // Permite acesso ao front-end no localhost:4200
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // Métodos HTTP permitidos
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));  // Cabeçalhos permitidos
+        configuration.setAllowCredentials(true);  // Permite credenciais em requisições
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

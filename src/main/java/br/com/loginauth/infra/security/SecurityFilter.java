@@ -28,16 +28,17 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = this.recoverToken(request);
         var login = tokenService.validateToken(token);
 
-        if(login != null){
+        if (login != null){
             User user = userRepository.findByCpf(login).orElseThrow(() -> new RuntimeException("User Not Found"));
-            // Task 0051 -   criar roles!!!
 
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+            // Adapte as authorities com base na role do usuário
+            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
             var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
     }
+
 
     private String recoverToken(HttpServletRequest request){
         var authHeader = request.getHeader("Authorization");

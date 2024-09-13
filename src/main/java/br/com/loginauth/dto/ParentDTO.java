@@ -2,15 +2,13 @@ package br.com.loginauth.dto;
 
 import java.time.LocalDate;
 
-public record RegisterRequestDTO(
+public record ParentDTO(
         String name,
         String cpf,
         String password,
-        String role,
         boolean active,
         String email,
-        LocalDate birthDate,  // Mude para LocalDate
+        LocalDate birthDate,
         String address,
-        String phone,
-        String registration
+        String phone
 ) {}
