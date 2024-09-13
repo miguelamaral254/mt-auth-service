@@ -37,7 +37,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/user/register").permitAll()  // Permite o registro sem autenticação
                                 .requestMatchers(HttpMethod.POST, "/user/register/student").permitAll()  // Permite o registro de student sem autenticação
                                 .requestMatchers(HttpMethod.POST, "/user/register/parent").permitAll()  // Permite o registro de parent sem autenticação
-                                .requestMatchers(HttpMethod.POST, "/user/register/professor").permitAll()  // Permite o registro de professor sem autenticação
+                                .requestMatchers(HttpMethod.POST, "/user/register/professor").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/user/register/coordination").permitAll()// Permite o registro de professor sem autenticação
                                 .requestMatchers(HttpMethod.GET, "/user/all").permitAll()  // Permite pegar todos os usuários sem autenticação
                                 .anyRequest().authenticated()  // Exige autenticação para as demais rotas
 
