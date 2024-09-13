@@ -1,6 +1,6 @@
 package br.com.loginauth.infra.security;
 
-import br.com.loginauth.domain.user.User;
+import br.com.loginauth.domain.entities.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -23,7 +23,7 @@ public class TokenService {
 
             String token = JWT.create()
                     .withIssuer("login-auth-api")
-                    .withSubject(user.getEmail())
+                    .withSubject(user.getCpf())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
             return token;

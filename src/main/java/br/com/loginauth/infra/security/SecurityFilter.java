@@ -1,6 +1,6 @@
 package br.com.loginauth.infra.security;
 
-import br.com.loginauth.domain.user.User;
+import br.com.loginauth.domain.entities.User;
 import br.com.loginauth.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,7 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         var login = tokenService.validateToken(token);
 
         if(login != null){
-            User user = userRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
+            User user = userRepository.findByCpf(login).orElseThrow(() -> new RuntimeException("User Not Found"));
             // Task 0051 -   criar roles!!!
 
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));

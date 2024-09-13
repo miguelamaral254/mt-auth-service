@@ -1,6 +1,6 @@
 package br.com.loginauth.infra.security;
 
-import br.com.loginauth.domain.user.User;
+import br.com.loginauth.domain.entities.User;
 import br.com.loginauth.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
