@@ -59,24 +59,33 @@ public class UserController {
     public ResponseEntity<ResponseDTO> registerParent(@RequestBody ParentDTO body) {
         Optional<User> user = this.repository.findByCpf(body.cpf());
 
-        if (user.isEmpty()) {
-            Parent newParent = new Parent();
-            newParent.setCpf(body.cpf());
-            newParent.setPassword(passwordEncoder.encode(body.password()));
-            newParent.setName(body.name());
-            newParent.setEmail(body.email());
-            newParent.setRole(Role.PARENT);
-            newParent.setActive(body.active());
-            newParent.setCreateDate(LocalDateTime.now());
-            newParent.setBirthDate(Date.valueOf(body.birthDate()));
-            newParent.setAddress(body.address());
-            newParent.setPhone(body.phone());
-
-            this.repository.save(newParent);
-            return ResponseEntity.ok(new ResponseDTO("Parent registered successfully", null));
+        if (user.isPresent()) {
+            return ResponseEntity.badRequest().body(new ResponseDTO("User already exists", null));
         }
-        return ResponseEntity.badRequest().body(new ResponseDTO("User already exists", null));
+
+        Optional<User> student = this.repository.findByCpf(body.studentCpf());
+        if (student.isEmpty() || !(student.get() instanceof Student)) {
+            return ResponseEntity.badRequest().body(new ResponseDTO("Estudante não existe", null));
+        }
+
+        Parent newParent = new Parent();
+        newParent.setCpf(body.cpf());
+        newParent.setPassword(passwordEncoder.encode(body.password()));
+        newParent.setName(body.name());
+        newParent.setEmail(body.email());
+        newParent.setRole(Role.PARENT);
+        newParent.setActive(body.active());
+        newParent.setCreateDate(LocalDateTime.now());
+        newParent.setBirthDate(Date.valueOf(body.birthDate()));
+        newParent.setAddress(body.address());
+        newParent.setPhone(body.phone());
+
+        // Salva o novo responsável no banco de dados
+        this.repository.save(newParent);
+
+        return ResponseEntity.ok(new ResponseDTO("Parent registered successfully", null));
     }
+
 
     @PostMapping("/register/professor")
     public ResponseEntity<ResponseDTO> registerProfessor(@RequestBody ProfessorDTO body) {

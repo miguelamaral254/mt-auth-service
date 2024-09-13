@@ -10,5 +10,6 @@ public record ParentDTO(
         String email,
         LocalDate birthDate,
         String address,
-        String phone
+        String phone,
+        String studentCpf 
 ) {}
