@@ -1,6 +1,7 @@
 package br.com.loginauth.dto;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public record ProfessorDTO(
         String name,

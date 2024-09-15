@@ -40,13 +40,14 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/user/register/professor").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/user/register/coordination").permitAll()// Permite o registro de professor sem autenticação
                                 .requestMatchers(HttpMethod.GET, "/user/all").permitAll()  // Permite pegar todos os usuários sem autenticação
-                                .anyRequest().authenticated()  // Exige autenticação para as demais rotas
-
+                                .requestMatchers(HttpMethod.POST, "/api/classes").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/lessons").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/disciplines").permitAll()
+                                .anyRequest().authenticated()
 
                         // TASK 0059: Alterar autorização de acesso à rotas
                 )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);  // Adiciona o filtro antes da autenticação padrão
-
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

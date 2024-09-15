@@ -87,7 +87,7 @@ public class UserService {
             newProfessor.setRole(Role.PROFESSOR);
             newProfessor.setActive(body.active());
             newProfessor.setCreateDate(LocalDateTime.now());
-            newProfessor.setBirthDate(Date.valueOf(body.birthDate()));
+            newProfessor.setBirthDate(Date.valueOf(String.valueOf(body.birthDate())));
             newProfessor.setAddress(body.address());
             newProfessor.setPhone(body.phone());
             newProfessor.setRegistration(body.registration());

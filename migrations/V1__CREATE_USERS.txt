@@ -1,0 +1,56 @@
+CREATE TABLE users (
+    cpf VARCHAR(11) NOT NULL PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255),
+    password VARCHAR(255),
+    role VARCHAR(50),
+    active BOOLEAN,
+    create_date TIMESTAMP,
+    CONSTRAINT users_cpf_unique UNIQUE (cpf)
+);
+
+CREATE TABLE students (
+    cpf VARCHAR(11) NOT NULL,
+    registration VARCHAR(255) NOT NULL,
+    birth_date DATE,
+    address VARCHAR(255),
+    phone VARCHAR(255),
+    PRIMARY KEY (cpf),
+    CONSTRAINT students_registration_unique UNIQUE (registration),
+    FOREIGN KEY (cpf) REFERENCES users (cpf) ON DELETE CASCADE
+);
+
+CREATE TABLE professors (
+    cpf VARCHAR(11) NOT NULL,
+    registration VARCHAR(255) NOT NULL,
+    birth_date DATE,
+    expertise_area VARCHAR(255),
+    academic_title VARCHAR(255),
+    phone VARCHAR(255),
+    address VARCHAR(255),
+    PRIMARY KEY (cpf),
+    CONSTRAINT professors_registration_unique UNIQUE (registration),
+    FOREIGN KEY (cpf) REFERENCES users (cpf) ON DELETE CASCADE
+);
+
+CREATE TABLE parents (
+    cpf VARCHAR(11) NOT NULL,
+    birth_date DATE,
+    address VARCHAR(255),
+    phone VARCHAR(255),
+    student_cpf VARCHAR(11),
+    PRIMARY KEY (cpf),
+    FOREIGN KEY (cpf) REFERENCES users (cpf) ON DELETE CASCADE,
+    FOREIGN KEY (student_cpf) REFERENCES students (cpf) ON DELETE SET NULL
+);
+
+CREATE TABLE coordinations (
+    cpf VARCHAR(11) NOT NULL,
+    birth_date DATE,
+    address VARCHAR(255),
+    phone VARCHAR(255),
+    registration VARCHAR(255) NOT NULL,
+    PRIMARY KEY (cpf),
+    CONSTRAINT coordinations_registration_unique UNIQUE (registration),
+    FOREIGN KEY (cpf) REFERENCES users (cpf) ON DELETE CASCADE
+);
