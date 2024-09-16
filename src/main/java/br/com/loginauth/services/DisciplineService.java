@@ -6,6 +6,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class DisciplineService {
@@ -20,6 +22,9 @@ public class DisciplineService {
     public Discipline getDisciplineById(Long id) {
         return disciplineRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Discipline not found with id " + id));
+    }
+    public List<Discipline> getAllDisciplines() {
+        return disciplineRepository.findAll();
     }
 
     public Discipline updateDiscipline(Long id, Discipline updatedDiscipline) {

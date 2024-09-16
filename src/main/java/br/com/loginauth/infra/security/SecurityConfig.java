@@ -40,9 +40,15 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/user/register/professor").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/user/register/coordination").permitAll()// Permite o registro de professor sem autenticação
                                 .requestMatchers(HttpMethod.GET, "/user/all").permitAll()  // Permite pegar todos os usuários sem autenticação
-                                .requestMatchers(HttpMethod.POST, "/api/classes").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/schoolclasses").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/schoolclasses").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/lessons").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/lessons").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/disciplines").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/disciplines").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/schoolclasses/addstudent").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/schoolclasses").permitAll()
+
                                 .anyRequest().authenticated()
 
                         // TASK 0059: Alterar autorização de acesso à rotas

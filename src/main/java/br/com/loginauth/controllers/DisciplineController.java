@@ -7,12 +7,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/disciplines")
 @RequiredArgsConstructor
 public class DisciplineController {
 
     private final DisciplineService disciplineService;
+
+    @GetMapping
+    public ResponseEntity<List<Discipline>> getAllDisciplines() {
+        return ResponseEntity.ok(disciplineService.getAllDisciplines());
+    }
 
     @PostMapping
     public ResponseEntity<Discipline> createDiscipline(@RequestBody Discipline discipline) {

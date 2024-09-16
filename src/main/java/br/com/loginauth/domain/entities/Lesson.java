@@ -21,7 +21,7 @@ public class Lesson {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "school_class_id", nullable = false) // Atualizado para school_class_id
+    @JoinColumn(name = "school_class_id", nullable = false)
     private SchoolClass schoolClass;
 
     @ManyToOne
