@@ -1,3 +1,5 @@
+package br.com.loginauth.infra.cors;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -13,7 +15,7 @@ public class CorsConfig {
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedOrigin("http://localhost:4200"); // Frontend origin
         corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*"); // Permitir todos os métodos (POST, GET, OPTIONS, etc.)
+        corsConfiguration.addAllowedMethod("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
