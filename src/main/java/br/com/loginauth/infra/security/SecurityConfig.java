@@ -48,6 +48,13 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/disciplines").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/schoolclasses/addstudent").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/schoolclasses").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/lessons/").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/lessons/").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/lessons/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/grades/").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/grades/").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/grades/student/{id}").permitAll()
+
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() //swagger""
 
                                 .anyRequest().authenticated()

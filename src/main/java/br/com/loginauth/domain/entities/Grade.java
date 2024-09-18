@@ -1,7 +1,6 @@
-package com.example.school.domain.entities;
+package br.com.loginauth.domain.entities;
 
-import br.com.loginauth.domain.entities.Discipline;
-import br.com.loginauth.domain.entities.Student;
+import br.com.loginauth.domain.enums.EvaluationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,7 +33,7 @@ public class Grade {
     private double grade;
 
     @Column(nullable = false)
-    private String evaluationType; // E.g., AV1, AV2, etc.
+    private EvaluationType evaluationType; // E.g., AV1, AV2, etc.
 
     @Column(name = "evaluation_description", nullable = false)
     private String evaluationDescription;
