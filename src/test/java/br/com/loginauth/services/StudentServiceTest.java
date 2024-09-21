@@ -4,6 +4,7 @@ import br.com.loginauth.domain.entities.Student;
 import br.com.loginauth.domain.entities.User;
 import br.com.loginauth.domain.enums.Role;
 import br.com.loginauth.dto.StudentDTO;
+import br.com.loginauth.exceptions.StudentNotFoundException;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
 import br.com.loginauth.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,6 +86,6 @@ class StudentServiceTest {
 
         when(userRepository.findByCpf(studentDTO.cpf())).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class, () -> studentService.updateStudent("123456789", studentDTO));
+        assertThrows(StudentNotFoundException.class, () -> studentService.updateStudent("123456789", studentDTO));
     }
 }

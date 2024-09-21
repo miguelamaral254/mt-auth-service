@@ -5,6 +5,8 @@ import br.com.loginauth.domain.entities.Student;
 import br.com.loginauth.domain.entities.User;
 import br.com.loginauth.domain.enums.Role;
 import br.com.loginauth.dto.ParentDTO;
+import br.com.loginauth.exceptions.ParentNotFoundException;
+import br.com.loginauth.exceptions.StudentNotFoundException;
 import br.com.loginauth.repositories.UserRepository;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +33,7 @@ public class ParentService {
 
         Optional<User> student = repository.findByCpf(body.studentCpf());
         if (student.isEmpty() || !(student.get() instanceof Student)) {
-            throw new IllegalArgumentException("Student does not exist");
+            throw new StudentNotFoundException("Student does not exist");
         }
 
         Parent newParent = new Parent();
@@ -66,7 +68,7 @@ public class ParentService {
             parent.setStudentCPF(body.studentCpf());
             repository.save(parent);
         } else {
-            throw new IllegalArgumentException("Parent not found");
+            throw new ParentNotFoundException("Parent not found");
         }
     }
 
