@@ -7,6 +7,7 @@ import br.com.loginauth.dto.CoordinationDTO;
 import br.com.loginauth.repositories.CoordinationRepository;
 import br.com.loginauth.repositories.UserRepository;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
+import br.com.loginauth.exceptions.CoordinationNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -49,10 +50,15 @@ public class CoordinationService {
     public Optional<User> findByCpf(String cpf) {
         return userRepository.findByCpf(cpf);
     }
+
     public void updateCoordination(String cpf, CoordinationDTO body) {
         Optional<User> existingUser = userRepository.findByCpf(cpf);
+
+        // Verifica se o usuário existe e é do tipo 'Coordination'
         if (existingUser.isPresent() && existingUser.get() instanceof Coordination) {
             Coordination coordination = (Coordination) existingUser.get();
+
+            // Atualiza os campos da Coordination com base nos dados do DTO
             coordination.setName(body.name());
             coordination.setEmail(body.email());
             coordination.setActive(body.active());
@@ -60,9 +66,12 @@ public class CoordinationService {
             coordination.setAddress(body.address());
             coordination.setPhone(body.phone());
             coordination.setRegistration(body.registration());
+
+            // Salva as alterações no repositório
             coordinationRepository.save(coordination);
         } else {
-            throw new IllegalArgumentException("Coordination not found");
+            // Lança a exceção personalizada caso não encontre a Coordination
+            throw new CoordinationNotFoundException("Coordination not found for CPF: " + cpf);
         }
     }
 

@@ -4,6 +4,7 @@ import br.com.loginauth.domain.entities.Professor;
 import br.com.loginauth.domain.entities.User;
 import br.com.loginauth.domain.enums.Role;
 import br.com.loginauth.dto.ProfessorDTO;
+import br.com.loginauth.exceptions.ProfessorNotFoundException;
 import br.com.loginauth.repositories.UserRepository;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,7 @@ public class ProfessorService {
     }
     public void updateProfessor(String cpf, ProfessorDTO body) {
         User existingUser = repository.findByCpf(cpf)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new ProfessorNotFoundException("Professor not found"));
 
         if (existingUser instanceof Professor) {
             Professor professor = (Professor) existingUser;
@@ -67,7 +68,8 @@ public class ProfessorService {
             professor.setAcademicTitle(body.academicTitle());
             repository.save(professor);
         } else {
-            throw new UsernameNotFoundException("User is not a professor");
+            throw new ProfessorNotFoundException("User is not a professor");
         }
     }
+
 }
