@@ -37,12 +37,16 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/user/register").permitAll()  // Permite o registro sem autenticação
                                 .requestMatchers(HttpMethod.POST, "/student/register").permitAll()  // Permite o registro de student sem autenticação
                                 .requestMatchers(HttpMethod.GET, "/student/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/student/update/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/parent/register").permitAll()  // Permite o registro de parent sem autenticação
                                 .requestMatchers(HttpMethod.GET, "/parent/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/parent/update/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/professor/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/professor/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/professor/update/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/coordination/register").permitAll()// Permite o registro de professor sem autenticação
                                 .requestMatchers(HttpMethod.GET, "/coordination/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/coordination/update/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/user/all").permitAll()  // Permite pegar todos os usuários sem autenticação
                                 .requestMatchers(HttpMethod.POST, "/schoolclasses").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/schoolclasses").permitAll()

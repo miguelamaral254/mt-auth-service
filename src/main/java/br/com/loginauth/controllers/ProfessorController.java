@@ -5,6 +5,7 @@ import br.com.loginauth.dto.ResponseDTO;
 import br.com.loginauth.services.ProfessorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,5 +26,14 @@ public class ProfessorController {
         return professorService.findByCpf(cpf)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+    @PutMapping("/update/{cpf}")
+    public ResponseEntity<ResponseDTO> updateProfessor(@PathVariable String cpf, @RequestBody ProfessorDTO body) {
+        try {
+            professorService.updateProfessor(cpf, body);
+            return ResponseEntity.ok(new ResponseDTO("Professor updated successfully", null));
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage(), null));
+        }
     }
 }

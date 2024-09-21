@@ -26,4 +26,14 @@ public class ParentController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    @PutMapping("/update/{cpf}")
+    public ResponseEntity<ResponseDTO> updateParent(@PathVariable String cpf, @RequestBody ParentDTO body) {
+        try {
+            parentService.updateParent(cpf, body);
+            return ResponseEntity.ok(new ResponseDTO("Parent updated successfully", null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage(), null));
+        }
+    }
+
 }

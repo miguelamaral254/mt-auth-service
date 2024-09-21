@@ -47,4 +47,21 @@ public class StudentService {
     public Optional<User> findByCpf(String cpf) {
         return repository.findByCpf(cpf);
     }
+    public void updateStudent(String cpf, StudentDTO body) {
+        Optional<User> existingUser = repository.findByCpf(cpf);
+        if (existingUser.isPresent() && existingUser.get() instanceof Student) {
+            Student student = (Student) existingUser.get();
+            student.setName(body.name());
+            student.setEmail(body.email());
+            student.setActive(body.active());
+            student.setBirthDate(Date.valueOf(body.birthDate()));
+            student.setAddress(body.address());
+            student.setPhone(body.phone());
+            student.setRegistration(body.registration());
+            repository.save(student);
+        } else {
+            throw new IllegalArgumentException("Student not found");
+        }
+    }
+
 }

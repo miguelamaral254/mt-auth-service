@@ -53,4 +53,21 @@ public class ParentService {
     public Optional<User> findByCpf(String cpf) {
         return repository.findByCpf(cpf);
     }
+    public void updateParent(String cpf, ParentDTO body) {
+        Optional<User> existingUser = repository.findByCpf(cpf);
+        if (existingUser.isPresent() && existingUser.get() instanceof Parent) {
+            Parent parent = (Parent) existingUser.get();
+            parent.setName(body.name());
+            parent.setEmail(body.email());
+            parent.setActive(body.active());
+            parent.setBirthDate(Date.valueOf(body.birthDate()));
+            parent.setAddress(body.address());
+            parent.setPhone(body.phone());
+            parent.setStudentCPF(body.studentCpf());
+            repository.save(parent);
+        } else {
+            throw new IllegalArgumentException("Parent not found");
+        }
+    }
+
 }

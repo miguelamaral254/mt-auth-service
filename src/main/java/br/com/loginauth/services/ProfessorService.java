@@ -7,6 +7,7 @@ import br.com.loginauth.dto.ProfessorDTO;
 import br.com.loginauth.repositories.UserRepository;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +49,25 @@ public class ProfessorService {
 
     public Optional<User> findByCpf(String cpf) {
         return repository.findByCpf(cpf);
+    }
+    public void updateProfessor(String cpf, ProfessorDTO body) {
+        User existingUser = repository.findByCpf(cpf)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (existingUser instanceof Professor) {
+            Professor professor = (Professor) existingUser;
+            professor.setName(body.name());
+            professor.setEmail(body.email());
+            professor.setActive(body.active());
+            professor.setBirthDate(Date.valueOf(body.birthDate()));
+            professor.setAddress(body.address());
+            professor.setPhone(body.phone());
+            professor.setRegistration(body.registration());
+            professor.setExpertiseArea(body.expertiseArea());
+            professor.setAcademicTitle(body.academicTitle());
+            repository.save(professor);
+        } else {
+            throw new UsernameNotFoundException("User is not a professor");
+        }
     }
 }

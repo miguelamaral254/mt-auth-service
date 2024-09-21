@@ -49,4 +49,21 @@ public class CoordinationService {
     public Optional<User> findByCpf(String cpf) {
         return userRepository.findByCpf(cpf);
     }
+    public void updateCoordination(String cpf, CoordinationDTO body) {
+        Optional<User> existingUser = userRepository.findByCpf(cpf);
+        if (existingUser.isPresent() && existingUser.get() instanceof Coordination) {
+            Coordination coordination = (Coordination) existingUser.get();
+            coordination.setName(body.name());
+            coordination.setEmail(body.email());
+            coordination.setActive(body.active());
+            coordination.setBirthDate(Date.valueOf(body.birthDate()));
+            coordination.setAddress(body.address());
+            coordination.setPhone(body.phone());
+            coordination.setRegistration(body.registration());
+            coordinationRepository.save(coordination);
+        } else {
+            throw new IllegalArgumentException("Coordination not found");
+        }
+    }
+
 }

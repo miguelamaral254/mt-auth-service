@@ -26,4 +26,14 @@ public class CoordinationController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    @PutMapping("/update/{cpf}")
+    public ResponseEntity<ResponseDTO> updateCoordination(@PathVariable String cpf, @RequestBody CoordinationDTO body) {
+        try {
+            coordinationService.updateCoordination(cpf, body);
+            return ResponseEntity.ok(new ResponseDTO("Coordination updated successfully", null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage(), null));
+        }
+    }
+
 }

@@ -33,4 +33,14 @@ public class StudentController {
         Optional<User> user = studentService.findByCpf(cpf);
         return user.isPresent() ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
+    @PutMapping("/update/{cpf}")
+    public ResponseEntity<ResponseDTO> updateStudent(@PathVariable String cpf, @RequestBody StudentDTO body) {
+        try {
+            studentService.updateStudent(cpf, body);
+            return ResponseEntity.ok(new ResponseDTO("Student updated successfully", null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage(), null));
+        }
+    }
+
 }
