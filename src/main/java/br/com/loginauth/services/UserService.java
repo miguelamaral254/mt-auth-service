@@ -1,29 +1,35 @@
 package br.com.loginauth.services;
 
 import br.com.loginauth.domain.entities.*;
+/*
 import br.com.loginauth.domain.enums.Role;
+
 import br.com.loginauth.dto.*;
 import br.com.loginauth.repositories.CoordinationRepository;
-import br.com.loginauth.repositories.UserRepository;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.sql.Date;
 import java.time.LocalDateTime;
+ */
+import br.com.loginauth.repositories.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
-    private final CoordinationRepository coordinationRepository;
-    private final UserRepository userRepository;
-
+   // private final PasswordEncoder passwordEncoder;
+   // private final CoordinationRepository coordinationRepository;
+   // private final UserRepository userRepository;
+/*
     public void registerStudent(StudentDTO body) {
         Optional<User> user = repository.findByCpf(body.cpf());
 
@@ -122,7 +128,7 @@ public class UserService {
             throw new UserAlreadyExistsException("User already exists");
         }
     }
-
+*/
     public List<User> getAllUsers() {
         return repository.findAll();
     }

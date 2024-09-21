@@ -1,6 +1,7 @@
 package br.com.loginauth.controllers;
 
 import br.com.loginauth.domain.entities.Grade;
+import br.com.loginauth.dto.GradeDTO;
 import br.com.loginauth.services.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,9 @@ public class GradeController {
     private GradeService gradeService;
 
     @PostMapping
-    public ResponseEntity<Grade> createGrade(@RequestBody Grade grade) {
-        Grade createdGrade = gradeService.createGrade(grade);
-        return new ResponseEntity<>(createdGrade, HttpStatus.CREATED);
+    public ResponseEntity<String> createGrade(@RequestBody GradeDTO gradeDTO) {
+        gradeService.createGrade(gradeDTO);
+        return ResponseEntity.ok("Grade created successfully");
     }
 
     @PutMapping("/{id}")

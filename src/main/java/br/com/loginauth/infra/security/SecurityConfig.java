@@ -35,10 +35,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()  // Permite o login sem autenticação
                                 .requestMatchers(HttpMethod.POST, "/user/register").permitAll()  // Permite o registro sem autenticação
-                                .requestMatchers(HttpMethod.POST, "/user/register/student").permitAll()  // Permite o registro de student sem autenticação
-                                .requestMatchers(HttpMethod.POST, "/user/register/parent").permitAll()  // Permite o registro de parent sem autenticação
-                                .requestMatchers(HttpMethod.POST, "/user/register/professor").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/user/register/coordination").permitAll()// Permite o registro de professor sem autenticação
+                                .requestMatchers(HttpMethod.POST, "/student/register").permitAll()  // Permite o registro de student sem autenticação
+                                .requestMatchers(HttpMethod.GET, "/student/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/parent/register").permitAll()  // Permite o registro de parent sem autenticação
+                                .requestMatchers(HttpMethod.GET, "/parent/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/professor/register").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/professor/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/coordination/register").permitAll()// Permite o registro de professor sem autenticação
+                                .requestMatchers(HttpMethod.GET, "/coordination/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/user/all").permitAll()  // Permite pegar todos os usuários sem autenticação
                                 .requestMatchers(HttpMethod.POST, "/schoolclasses").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/schoolclasses").permitAll()
@@ -51,9 +55,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/lessons/").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/lessons/").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/lessons/{id}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/grades/").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/grades/").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/grades/student/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/grades").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/grades").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/grades/student/{cpf}").permitAll()
 
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() //swagger""
 

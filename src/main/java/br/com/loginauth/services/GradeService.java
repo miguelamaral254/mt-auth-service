@@ -1,7 +1,12 @@
 package br.com.loginauth.services;
 
+import br.com.loginauth.domain.entities.Discipline;
 import br.com.loginauth.domain.entities.Grade;
+import br.com.loginauth.domain.entities.Student;
+import br.com.loginauth.dto.GradeDTO;
+import br.com.loginauth.repositories.DisciplineRepository;
 import br.com.loginauth.repositories.GradeRepository;
+import br.com.loginauth.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +18,26 @@ public class GradeService {
 
     @Autowired
     private GradeRepository gradeRepository;
+    @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
+    private DisciplineRepository disciplineRepository;
 
-    public Grade createGrade(Grade grade) {
-        return gradeRepository.save(grade);
+    public void createGrade(GradeDTO gradeDTO) {
+        Student student = (Student) studentRepository.findByCpf(gradeDTO.student().cpf())
+                .orElseThrow(() -> new IllegalArgumentException("Student not found"));
+        Discipline discipline = disciplineRepository.findById(gradeDTO.discipline().id())
+                .orElseThrow(() -> new IllegalArgumentException("Discipline not found"));
+
+        Grade grade = new Grade();
+        grade.setStudent(student);
+        grade.setDiscipline(discipline);
+        grade.setGrade(gradeDTO.grade());
+        grade.setEvaluationType(gradeDTO.evaluationType());
+        grade.setEvaluationDescription(gradeDTO.evaluationDescription());
+        grade.setEvaluationDate(gradeDTO.evaluationDate());
+
+        gradeRepository.save(grade);
     }
 
     public Grade updateGrade(Long id, Grade updatedGrade) {
