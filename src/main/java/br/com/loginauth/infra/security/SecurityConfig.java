@@ -29,41 +29,48 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // Desabilitando CSRF pois a aplicação é stateless
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // Adicionando suporte ao CORS
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // Configurando como stateless
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()  // Permite o login sem autenticação
-                                .requestMatchers(HttpMethod.POST, "/user/register").permitAll()  // Permite o registro sem autenticação
-                                .requestMatchers(HttpMethod.POST, "/student/register").permitAll()  // Permite o registro de student sem autenticação
+                                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/user/all").permitAll()
+
+                                .requestMatchers(HttpMethod.POST, "/student/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/student/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/student/update/{cpf}").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/parent/register").permitAll()  // Permite o registro de parent sem autenticação
+
+                                .requestMatchers(HttpMethod.POST, "/parent/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/parent/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/parent/update/{cpf}").permitAll()
+
                                 .requestMatchers(HttpMethod.POST, "/professor/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/professor/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/professor/update/{cpf}").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/coordination/register").permitAll()// Permite o registro de professor sem autenticação
+
+                                .requestMatchers(HttpMethod.POST, "/coordination/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/coordination/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/coordination/update/{cpf}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/user/all").permitAll()  // Permite pegar todos os usuários sem autenticação
+
                                 .requestMatchers(HttpMethod.POST, "/schoolclasses").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/schoolclasses").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/schoolclasses/addstudent").permitAll()
+
                                 .requestMatchers(HttpMethod.POST, "/lessons").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/lessons").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/lessons/{id}").permitAll()
+
                                 .requestMatchers(HttpMethod.POST, "/disciplines").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/disciplines").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/schoolclasses/addstudent").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/schoolclasses").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/lessons/").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/lessons/").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/lessons/{id}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/grades").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/disciplines/{id}").permitAll()
+
                                 .requestMatchers(HttpMethod.POST, "/grades").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/grades").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/grades/student/{cpf}").permitAll()
 
-                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() //swagger""
+
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 
                                 .anyRequest().authenticated()
 
@@ -76,8 +83,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));  // Permite acesso ao front-end no localhost:4200
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // Métodos HTTP permitidos
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));  // Cabeçalhos permitidos
         configuration.setAllowCredentials(true);  // Permite credenciais em requisições
 

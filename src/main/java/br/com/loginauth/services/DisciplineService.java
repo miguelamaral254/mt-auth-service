@@ -1,6 +1,7 @@
 package br.com.loginauth.services;
 
 import br.com.loginauth.domain.entities.Discipline;
+import br.com.loginauth.exceptions.DisciplineNotFoundException;
 import br.com.loginauth.repositories.DisciplineRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class DisciplineService {
 
     public Discipline getDisciplineById(Long id) {
         return disciplineRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Discipline not found with id " + id));
+                .orElseThrow(() -> new DisciplineNotFoundException("Discipline not found"));
     }
     public List<Discipline> getAllDisciplines() {
         return disciplineRepository.findAll();
@@ -29,9 +30,14 @@ public class DisciplineService {
 
     public Discipline updateDiscipline(Long id, Discipline updatedDiscipline) {
         Discipline existingDiscipline = getDisciplineById(id);
+
         existingDiscipline.setName(updatedDiscipline.getName());
+        existingDiscipline.setWorkload(updatedDiscipline.getWorkload());
+        existingDiscipline.setDescription(updatedDiscipline.getDescription());
+
         return disciplineRepository.save(existingDiscipline);
     }
+
 
     public void deleteDiscipline(Long id) {
         disciplineRepository.deleteById(id);
