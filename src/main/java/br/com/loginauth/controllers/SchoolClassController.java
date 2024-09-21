@@ -2,6 +2,7 @@ package br.com.loginauth.controllers;
 
 import br.com.loginauth.domain.entities.SchoolClass;
 import br.com.loginauth.dto.AddStudentRequest;
+import br.com.loginauth.dto.SchoolClassDTO;
 import br.com.loginauth.dto.StudentResponseDTO;
 import br.com.loginauth.services.SchoolClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,9 @@ public class SchoolClassController {
 
     // Criar uma nova turma
     @PostMapping
-    public ResponseEntity<SchoolClass> createSchoolClass(@RequestBody SchoolClass schoolClass) {
-        SchoolClass createdSchoolClass = schoolClassService.createClass(schoolClass);
+    public ResponseEntity<SchoolClass> createSchoolClass(@RequestBody SchoolClassDTO schoolClassDTO) {
+
+        SchoolClass createdSchoolClass = schoolClassService.createClass(schoolClassDTO);
         return new ResponseEntity<>(createdSchoolClass, HttpStatus.CREATED);
     }
 

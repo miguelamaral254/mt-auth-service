@@ -2,6 +2,7 @@ package br.com.loginauth.services;
 
 import br.com.loginauth.domain.entities.SchoolClass;
 import br.com.loginauth.domain.entities.Student;
+import br.com.loginauth.dto.SchoolClassDTO;
 import br.com.loginauth.dto.StudentResponseDTO;
 import br.com.loginauth.repositories.SchoolClassRepository;
 import br.com.loginauth.repositories.StudentRepository;
@@ -20,7 +21,12 @@ public class SchoolClassService {
     @Autowired
     private StudentRepository studentRepository;
 
-    public SchoolClass createClass(SchoolClass schoolClass) {
+    public SchoolClass createClass(SchoolClassDTO schoolClassDTO) {
+        // Converte o DTO em uma entidade SchoolClass
+        SchoolClass schoolClass = new SchoolClass();
+        schoolClass.setName(schoolClassDTO.name()); // Acessando o método name() do record SchoolClassDTO
+
+        // Salva e retorna a nova turma
         return schoolClassRepository.save(schoolClass);
     }
 
@@ -53,6 +59,7 @@ public class SchoolClassService {
                 })
                 .collect(Collectors.toList());
     }
+
     // Buscar todas as turmas
     public List<SchoolClass> getAllClasses() {
         return schoolClassRepository.findAll();
@@ -63,4 +70,5 @@ public class SchoolClassService {
         return schoolClassRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SchoolClass not found with id " + id));
     }
+
 }
