@@ -72,7 +72,7 @@ public class LessonService {
     private LessonDTO mapToDTO(Lesson lesson) {
         return new LessonDTO(
                 lesson.getId(),
-                new SchoolClassDTO(lesson.getSchoolClass().getId(), lesson.getSchoolClass().getName()),
+                new SchoolClassDTO(lesson.getSchoolClass().getId(), lesson.getSchoolClass().getName(), lesson.getSchoolClass().getCode(),lesson.getSchoolClass().getDate()),
                 new DisciplineDTO(
                         lesson.getDiscipline().getId(),
                         lesson.getDiscipline().getName(),

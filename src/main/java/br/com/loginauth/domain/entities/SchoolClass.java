@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +25,12 @@ public class SchoolClass {
 
     @Column(nullable = false, unique = true)
     private String name;
+    @Column(nullable = false, unique = true)
+    private String code;  // Código único para a turma
 
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
     @ManyToMany
     @JoinTable(
             name = "class_student",

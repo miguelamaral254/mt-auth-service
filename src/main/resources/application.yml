@@ -2,7 +2,7 @@ spring:
   application:
     name: login-auth-api
   datasource:
-    url: jdbc:mysql://localhost:3306/testelogin
+    url: jdbc:mysql://localhost:3306/mt_db
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 32412294

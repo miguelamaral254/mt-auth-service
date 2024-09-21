@@ -22,13 +22,14 @@ public class SchoolClassService {
     private StudentRepository studentRepository;
 
     public SchoolClass createClass(SchoolClassDTO schoolClassDTO) {
-        // Converte o DTO em uma entidade SchoolClass
         SchoolClass schoolClass = new SchoolClass();
-        schoolClass.setName(schoolClassDTO.name()); // Acessando o método name() do record SchoolClassDTO
+        schoolClass.setName(schoolClassDTO.name());
+        schoolClass.setCode(schoolClassDTO.code());
+        schoolClass.setDate(schoolClassDTO.date());
 
-        // Salva e retorna a nova turma
         return schoolClassRepository.save(schoolClass);
     }
+
 
     public SchoolClass addStudentToClass(Long schoolClassId, String studentCpf) {
         // Busca a classe com base no ID
