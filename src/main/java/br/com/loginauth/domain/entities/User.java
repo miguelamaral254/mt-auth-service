@@ -19,7 +19,7 @@ public class User {
     @Id
     @Column(nullable = false, unique = true)
     private String cpf;
-
+// private String ?? photo; Task 0071
     private String name;
     private String email;
     private String password;

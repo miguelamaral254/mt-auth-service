@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -131,6 +132,9 @@ public class UserService {
 */
     public List<User> getAllUsers() {
         return repository.findAll();
+    }
+    public Optional<User> findByCpf(String cpf) {
+        return repository.findByCpf(cpf);
     }
 
 }
