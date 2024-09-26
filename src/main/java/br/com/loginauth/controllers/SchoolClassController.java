@@ -33,10 +33,11 @@ public class SchoolClassController {
         SchoolClass updatedSchoolClass = schoolClassService.addStudentToClass(request.getClassId(), request.getCpf());
         return new ResponseEntity<>(updatedSchoolClass, HttpStatus.OK);
     }
-
-
-
-
+    @PutMapping("/{id}")
+    public ResponseEntity<SchoolClass> updateClass(@PathVariable Long id, @RequestBody SchoolClassDTO schoolClassDTO) {
+        SchoolClass updatedClass = schoolClassService.updateClass(id, schoolClassDTO);
+        return ResponseEntity.ok(updatedClass);
+    }
 
     // Endpoint para obter os alunos de uma turma específica
     @GetMapping("/{classId}/students")

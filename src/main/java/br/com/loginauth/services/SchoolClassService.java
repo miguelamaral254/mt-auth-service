@@ -47,6 +47,20 @@ public class SchoolClassService {
         // Salva a turma atualizada
         return schoolClassRepository.save(schoolClass);
     }
+    public SchoolClass updateClass(Long id, SchoolClassDTO schoolClassDTO) {
+        // Busca a turma existente
+        SchoolClass schoolClass = schoolClassRepository.findById(id)
+                .orElseThrow(() -> new SchoolClassNotFoundException("SchoolClass not found with id " + id));
+
+        // Atualiza os campos da turma
+        schoolClass.setName(schoolClassDTO.name());
+        schoolClass.setCode(schoolClassDTO.code());
+        schoolClass.setDate(schoolClassDTO.date());
+
+        // Salva a turma atualizada
+        return schoolClassRepository.save(schoolClass);
+    }
+
     // Busca aluno dentro de uma turma
     public List<StudentResponseDTO> getStudentsInClass(Long schoolClassId) {
         SchoolClass schoolClass = schoolClassRepository.findById(schoolClassId)

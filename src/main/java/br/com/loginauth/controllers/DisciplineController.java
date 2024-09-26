@@ -25,7 +25,11 @@ public class DisciplineController {
     public ResponseEntity<Discipline> createDiscipline(@RequestBody Discipline discipline) {
         return ResponseEntity.ok(disciplineService.createDiscipline(discipline));
     }
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Discipline> getDisciplineById(@PathVariable Long id) {
+        Discipline discipline = disciplineService.getDisciplineById(id);
+        return ResponseEntity.ok(discipline);
+    }
     @PutMapping("/{id}")
     public ResponseEntity<Discipline> updateDiscipline(@PathVariable Long id, @RequestBody Discipline updatedDiscipline) {
         return ResponseEntity.ok(disciplineService.updateDiscipline(id, updatedDiscipline));

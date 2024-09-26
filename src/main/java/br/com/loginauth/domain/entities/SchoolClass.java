@@ -26,7 +26,7 @@ public class SchoolClass {
     @Column(nullable = false, unique = true)
     private String name;
     @Column(nullable = false, unique = true)
-    private String code;  // Código único para a turma
+    private String code;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

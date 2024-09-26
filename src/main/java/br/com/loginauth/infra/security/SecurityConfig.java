@@ -56,6 +56,8 @@ public class SecurityConfig {
 
                                 .requestMatchers(HttpMethod.POST, "/schoolclasses").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/schoolclasses").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/schoolclasses/{id}").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/schoolclasses/{id}").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/schoolclasses/addstudent").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "/lessons").permitAll()
@@ -64,6 +66,7 @@ public class SecurityConfig {
 
                                 .requestMatchers(HttpMethod.POST, "/disciplines").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/disciplines").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/disciplines/{id}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/disciplines/{id}").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "/grades").permitAll()
