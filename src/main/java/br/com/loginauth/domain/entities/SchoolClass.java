@@ -1,6 +1,10 @@
 package br.com.loginauth.domain.entities;
 
 import br.com.loginauth.domain.entities.Student;
+import br.com.loginauth.domain.enums.Letter;
+import br.com.loginauth.domain.enums.Shift;
+import br.com.loginauth.domain.enums.TechnicalCourse;
+import br.com.loginauth.domain.enums.Year;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,11 +27,16 @@ public class SchoolClass {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    @Column(name = "letter", nullable = false)
+    private Letter letter;
+    @Column(name = "shift", nullable = false)
+    private Shift shift;
     @Column(nullable = false, unique = true)
     private String code;
-
+    @Column(name = "technical_course", nullable = false)
+    private TechnicalCourse technicalCourse;
+    @Column(name = "year", nullable = false)
+    private Year year;
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;

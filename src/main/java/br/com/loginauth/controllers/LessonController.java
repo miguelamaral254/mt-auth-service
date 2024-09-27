@@ -42,4 +42,16 @@ public class LessonController {
         List<LessonDTO> lessonDTOs = lessonService.getAllLessons();
         return ResponseEntity.ok(lessonDTOs);
     }
+    @GetMapping("name/{name}")
+    public ResponseEntity<LessonDTO> getLessonByName(@PathVariable String name) {
+        try {
+            LessonDTO lessonDTO = lessonService.getLessonByName(name);
+            return ResponseEntity.ok(lessonDTO);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build(); // Retorno de erro 404
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build(); // Captura de exceções gerais
+        }
+    }
+
 }

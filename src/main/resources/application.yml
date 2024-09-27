@@ -20,4 +20,4 @@ api:
       secret: key-3241-key
 
 server:
-  port: 8089  # Definindo a porta do servidor
+  port: 8080  # Definindo a porta do servidor

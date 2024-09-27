@@ -57,12 +57,17 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/schoolclasses").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/schoolclasses").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/schoolclasses/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/schoolclasses/{classId}/students").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/schoolclasses/{id}").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/schoolclasses/addstudent").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/schoolclasses/{classId}/students/{studentCpf}").permitAll()
+
+
 
                                 .requestMatchers(HttpMethod.POST, "/lessons").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/lessons").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/lessons/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/lessons/name/{name}").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "/disciplines").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/disciplines").permitAll()

@@ -31,6 +31,7 @@
     </properties>
     <dependencies>
         <!-- Dependência para o uso de JWT (JSON Web Token) -->
+        <!-- Dependência para o uso de JWT (JSON Web Token) -->
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
