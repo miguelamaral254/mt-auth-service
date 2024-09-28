@@ -1,12 +1,11 @@
 package br.com.loginauth.services;
 
-import br.com.loginauth.domain.entities.Discipline;
+import br.com.loginauth.domain.entities.Evaluation;
 import br.com.loginauth.domain.entities.Grade;
-import br.com.loginauth.domain.entities.Student;
+import br.com.loginauth.domain.entities.Assessments;
 import br.com.loginauth.dto.GradeDTO;
-import br.com.loginauth.repositories.DisciplineRepository;
+import br.com.loginauth.repositories.AssessmentsRepository;
 import br.com.loginauth.repositories.GradeRepository;
-import br.com.loginauth.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +17,19 @@ public class GradeService {
 
     @Autowired
     private GradeRepository gradeRepository;
+
     @Autowired
-    private StudentRepository studentRepository;
-    @Autowired
-    private DisciplineRepository disciplineRepository;
+    private AssessmentsRepository assessmentsRepository;
 
     public void createGrade(GradeDTO gradeDTO) {
-        Student student = (Student) studentRepository.findByCpf(gradeDTO.student().cpf())
-                .orElseThrow(() -> new IllegalArgumentException("Student not found"));
-        Discipline discipline = disciplineRepository.findById(gradeDTO.discipline().id())
-                .orElseThrow(() -> new IllegalArgumentException("Discipline not found"));
+        Assessments assessments = assessmentsRepository.findById(gradeDTO.assessmentsId())
+                .orElseThrow(() -> new IllegalArgumentException("Assessment not found"));
 
         Grade grade = new Grade();
-        grade.setStudent(student);
-        grade.setDiscipline(discipline);
-        grade.setGrade(gradeDTO.grade());
-        grade.setEvaluationType(gradeDTO.evaluationType());
-        grade.setEvaluationDescription(gradeDTO.evaluationDescription());
-        grade.setEvaluationDate(gradeDTO.evaluationDate());
+        grade.setAssessments(assessments);
+        grade.setEvaluations(gradeDTO.evaluations());
+        grade.setSemester(gradeDTO.semester());
+        grade.setFinalGrade(gradeDTO.finalGrade());
 
         gradeRepository.save(grade);
     }
@@ -45,22 +39,17 @@ public class GradeService {
 
         if (gradeOptional.isPresent()) {
             Grade existingGrade = gradeOptional.get();
-            existingGrade.setGrade(updatedGrade.getGrade());
-            existingGrade.setEvaluationType(updatedGrade.getEvaluationType());
-            existingGrade.setEvaluationDescription(updatedGrade.getEvaluationDescription());
-            existingGrade.setEvaluationDate(updatedGrade.getEvaluationDate());
+            existingGrade.setFinalGrade(updatedGrade.getFinalGrade());
+            existingGrade.setEvaluations(updatedGrade.getEvaluations());
+            existingGrade.setSemester(updatedGrade.getSemester());
             return gradeRepository.save(existingGrade);
         } else {
             throw new RuntimeException("Grade not found");
         }
     }
 
-    public List<Grade> getGradesByStudentCpf(String studentCpf) {
-        return gradeRepository.findByStudentCpf(studentCpf);
-    }
-
-    public List<Grade> getGradesByDisciplineId(Long disciplineId) {
-        return gradeRepository.findByDisciplineId(disciplineId);
+    public List<Grade> getGradesByAssessmentId(Long assessmentsId) {
+        return gradeRepository.findByAssessmentsId(assessmentsId);
     }
 
     public void deleteGrade(Long id) {

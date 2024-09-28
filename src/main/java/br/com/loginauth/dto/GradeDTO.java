@@ -1,14 +1,15 @@
 package br.com.loginauth.dto;
 
-import br.com.loginauth.domain.enums.EvaluationType;
 
-import java.time.LocalDateTime;
+
+import br.com.loginauth.domain.entities.Evaluation;
+import br.com.loginauth.domain.enums.Semester;
+
+import java.util.List;
 
 public record GradeDTO(
-        StudentDTO student,
-        DisciplineDTO discipline,
-        double grade,
-        EvaluationType evaluationType,
-        String evaluationDescription,
-        LocalDateTime evaluationDate
+        Long assessmentsId,
+        List<Evaluation> evaluations,
+        double finalGrade,
+        Semester semester
 ) {}

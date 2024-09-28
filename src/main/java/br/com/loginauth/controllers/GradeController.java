@@ -24,22 +24,20 @@ public class GradeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Grade> updateGrade(@PathVariable Long id, @RequestBody Grade grade) {
-        Grade updatedGrade = gradeService.updateGrade(id, grade);
-        return new ResponseEntity<>(updatedGrade, HttpStatus.OK);
+    public ResponseEntity<Grade> updateGrade(@PathVariable Long id, @RequestBody Grade updatedGrade) {
+        Grade grade = gradeService.updateGrade(id, updatedGrade);
+        return new ResponseEntity<>(grade, HttpStatus.OK);
     }
 
-    @GetMapping("/student/{cpf}")
-    public ResponseEntity<List<Grade>> getGradesByStudent(@PathVariable String cpf) {
-        List<Grade> grades = gradeService.getGradesByStudentCpf(cpf);
+    @GetMapping("/assessment/{assessmentId}")
+    public ResponseEntity<List<Grade>> getGradesByAssessment(@PathVariable Long assessmentId) {
+        List<Grade> grades = gradeService.getGradesByAssessmentId(assessmentId);
         return new ResponseEntity<>(grades, HttpStatus.OK);
     }
 
-    @GetMapping("/discipline/{id}")
-    public ResponseEntity<List<Grade>> getGradesByDiscipline(@PathVariable Long id) {
-        List<Grade> grades = gradeService.getGradesByDisciplineId(id);
-        return new ResponseEntity<>(grades, HttpStatus.OK);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteGrade(@PathVariable Long id) {
+        gradeService.deleteGrade(id);
+        return ResponseEntity.ok("Grade deleted successfully");
     }
-
-
 }

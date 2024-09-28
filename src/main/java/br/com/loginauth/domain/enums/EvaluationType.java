@@ -5,6 +5,5 @@ public enum EvaluationType {
     AV2,
     AV3,
     AV4,
-    AV5,
-    AV6
+    RECOVERY
 }

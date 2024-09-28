@@ -1,14 +1,13 @@
 package br.com.loginauth.domain.entities;
 
-import br.com.loginauth.domain.enums.EvaluationType;
-import br.com.loginauth.domain.enums.Quarter;
+import br.com.loginauth.domain.enums.Semester;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "grades")
@@ -23,25 +22,23 @@ public class Grade {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_cpf", nullable = false)
-    private Student student;
+    @JoinColumn(name = "assessments_id", nullable = false)
+    private Assessments assessments;
 
-    @ManyToOne
-    @JoinColumn(name = "discipline_id", nullable = false)
-    private Discipline discipline;
+    @OneToMany(mappedBy = "grade", cascade = CascadeType.ALL)
+    private List<Evaluation> evaluations;
 
-    @Column(nullable = false)
-    private double grade;
+    @Enumerated(EnumType.STRING)
+    private Semester semester; // Mudança de Quarter para Semester
 
-    @Column(nullable = false)
-    private Quarter quarter;
+    private double finalGrade; // Média de todas as avaliações
 
-    @Column(nullable = false)
-    private EvaluationType evaluationType; // E.g., AV1, AV2, etc.
-
-    @Column(name = "evaluation_description", nullable = false)
-    private String evaluationDescription;
-
-    @Column(name = "evaluation_date", nullable = false)
-    private LocalDateTime evaluationDate = LocalDateTime.now();
+    // Método para calcular a média das avaliações
+    public double calculateAverage() {
+        if (evaluations == null || evaluations.isEmpty()) {
+            return 0;
+        }
+        double total = evaluations.stream().mapToDouble(Evaluation::getEvaluation).sum();
+        return total / evaluations.size();
+    }
 }

@@ -62,8 +62,6 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/schoolclasses/addstudent").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/schoolclasses/{classId}/students/{studentCpf}").permitAll()
 
-
-
                                 .requestMatchers(HttpMethod.POST, "/lessons").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/lessons").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/lessons/{id}").permitAll()
@@ -74,14 +72,29 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/disciplines/{id}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/disciplines/{id}").permitAll()
 
-                                .requestMatchers(HttpMethod.POST, "/grades").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/grades").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/grades/student/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/grades").permitAll() // Criação de notas
+                                .requestMatchers(HttpMethod.PUT, "/grades/{id}").permitAll() // Atualização de notas
+                                .requestMatchers(HttpMethod.GET, "/grades/student/{cpf}").permitAll() // Obtenção de notas por CPF de aluno
+                                .requestMatchers(HttpMethod.GET, "/grades/assessment/{assessmentId}").permitAll() // Obtenção de notas por avaliação
+                                .requestMatchers(HttpMethod.DELETE, "/grades/{id}").permitAll() // Exclusão de notas
 
+                                .requestMatchers(HttpMethod.POST, "/assessments").permitAll() // Criação de avaliações
+                                .requestMatchers(HttpMethod.GET, "/assessments").permitAll() // Listar avaliações
+                                .requestMatchers(HttpMethod.GET, "/assessments/student/{cpf}").permitAll() // Obtenção de uma avaliação por ID
+                                .requestMatchers(HttpMethod.PUT, "/assessments/{id}").permitAll() // Atualização de uma avaliação
+                                .requestMatchers(HttpMethod.DELETE, "/assessments/{id}").permitAll() // Exclusão de uma avaliação
+
+                                .requestMatchers(HttpMethod.POST, "/evaluations").permitAll() // Criação de avaliações
+                                .requestMatchers(HttpMethod.GET, "/evaluations").permitAll() // Listar avaliações
+                                .requestMatchers(HttpMethod.GET, "/evaluations/{id}").permitAll() // Obtenção de uma avaliação por ID
+                                .requestMatchers(HttpMethod.PUT, "/evaluations/{id}").permitAll() // Atualização de uma avaliação
+                                .requestMatchers(HttpMethod.DELETE, "/evaluations/{id}").permitAll() // Exclusão de uma avaliação
 
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 
                                 .anyRequest().authenticated()
+
+
 
                         // TASK 0059: Alterar autorização de acesso à rotas
                 )
