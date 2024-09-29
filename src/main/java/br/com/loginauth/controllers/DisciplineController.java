@@ -1,6 +1,7 @@
 package br.com.loginauth.controllers;
 
 import br.com.loginauth.domain.entities.Discipline;
+import br.com.loginauth.dto.DisciplineDTO;
 import br.com.loginauth.services.DisciplineService;
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +40,11 @@ public class DisciplineController {
     public ResponseEntity<Void> deleteDiscipline(@PathVariable Long id) {
         disciplineService.deleteDiscipline(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/student/{cpf}")
+    public List<DisciplineDTO> getDisciplinesByStudentCpf(@PathVariable String cpf) {
+        return disciplineService.getDisciplinesByStudentCpf(cpf);
     }
 }
 

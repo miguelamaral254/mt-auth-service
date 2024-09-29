@@ -1,44 +1,34 @@
 package br.com.loginauth.domain.entities;
 
-import br.com.loginauth.domain.enums.Semester;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "grades")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Grade {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "assessments_id", nullable = false)
-    private Assessments assessments;
+    @JoinColumn(name = "student_discipline_id")
+    @JsonManagedReference // Evita a serialização recursiva
+    private StudentDiscipline studentDiscipline;
 
-    @OneToMany(mappedBy = "grade", cascade = CascadeType.ALL)
-    private List<Evaluation> evaluations;
-
-    @Enumerated(EnumType.STRING)
-    private Semester semester; // Mudança de Quarter para Semester
-
-    private double finalGrade; // Média de todas as avaliações
-
-    // Método para calcular a média das avaliações
-    public double calculateAverage() {
-        if (evaluations == null || evaluations.isEmpty()) {
-            return 0;
-        }
-        double total = evaluations.stream().mapToDouble(Evaluation::getEvaluation).sum();
-        return total / evaluations.size();
-    }
+    private Double av1;
+    private Double av2;
+    private Double av3;
+    private Double av4;
+    private Double finalGrade;
+    private LocalDateTime evaluationDate;
 }

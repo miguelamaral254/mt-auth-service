@@ -1,12 +1,12 @@
 package br.com.loginauth.domain.entities;
 
-
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "disciplines")
@@ -28,4 +28,5 @@ public class Discipline {
 
     @Column(nullable = false)
     private String description;
+
 }

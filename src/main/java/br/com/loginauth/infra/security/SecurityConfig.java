@@ -41,6 +41,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/student/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/student/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/student/update/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/student/{cpf}/disciplines").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "/parent/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/parent/{cpf}").permitAll()
@@ -68,29 +69,31 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/lessons/name/{name}").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "/disciplines").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/disciplines/student/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/disciplines").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/disciplines/{id}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/disciplines/{id}").permitAll()
 
-                                .requestMatchers(HttpMethod.POST, "/grades").permitAll() // Criação de notas
-                                .requestMatchers(HttpMethod.PUT, "/grades/{id}").permitAll() // Atualização de notas
-                                .requestMatchers(HttpMethod.GET, "/grades/student/{cpf}").permitAll() // Obtenção de notas por CPF de aluno
-                                .requestMatchers(HttpMethod.GET, "/grades/assessment/{assessmentId}").permitAll() // Obtenção de notas por avaliação
-                                .requestMatchers(HttpMethod.DELETE, "/grades/{id}").permitAll() // Exclusão de notas
 
-                                .requestMatchers(HttpMethod.POST, "/assessments").permitAll() // Criação de avaliações
-                                .requestMatchers(HttpMethod.GET, "/assessments").permitAll() // Listar avaliações
-                                .requestMatchers(HttpMethod.GET, "/assessments/student/{cpf}").permitAll() // Obtenção de uma avaliação por ID
-                                .requestMatchers(HttpMethod.PUT, "/assessments/{id}").permitAll() // Atualização de uma avaliação
-                                .requestMatchers(HttpMethod.DELETE, "/assessments/{id}").permitAll() // Exclusão de uma avaliação
 
-                                .requestMatchers(HttpMethod.POST, "/evaluations").permitAll() // Criação de avaliações
-                                .requestMatchers(HttpMethod.GET, "/evaluations").permitAll() // Listar avaliações
-                                .requestMatchers(HttpMethod.GET, "/evaluations/{id}").permitAll() // Obtenção de uma avaliação por ID
-                                .requestMatchers(HttpMethod.PUT, "/evaluations/{id}").permitAll() // Atualização de uma avaliação
-                                .requestMatchers(HttpMethod.DELETE, "/evaluations/{id}").permitAll() // Exclusão de uma avaliação
+
+                                .requestMatchers(HttpMethod.POST, "/student-disciplines").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/student-disciplines").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/student-disciplines/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/student-disciplines/student/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/student-disciplines/{id}").permitAll()
+                                .requestMatchers(HttpMethod.DELETE , "/student-disciplines/{id}").permitAll()
+
+                                .requestMatchers(HttpMethod.POST, "/grades").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/grades/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/grades/student/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/grades/assessment/{assessmentId}").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/grades/assessment/{assessmentId}/grades").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/grades/{id}").permitAll()
+
 
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
 
                                 .anyRequest().authenticated()
 

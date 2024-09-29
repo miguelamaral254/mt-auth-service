@@ -75,9 +75,11 @@ public class LessonService {
                 new DisciplineDTO(
                         lesson.getDiscipline().getId(),
                         lesson.getDiscipline().getName(),
-                        lesson.getDiscipline().getWorkload(),
+                        lesson.getDiscipline().getWorkload(), // Incluindo a carga horária
                         lesson.getDiscipline().getDescription()
+
                 ),
+
                 new ProfessorDTO(
                         lesson.getProfessor().getName(),
                         lesson.getProfessor().getCpf(),

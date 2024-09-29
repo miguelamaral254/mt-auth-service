@@ -1,5 +1,7 @@
 package br.com.loginauth.dto;
 
+
+
 public record DisciplineDTO(
         Long id,
         String name,
