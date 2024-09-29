@@ -78,16 +78,12 @@ public class SecurityConfig {
 
 
                                 .requestMatchers(HttpMethod.POST, "/student-disciplines").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/student-disciplines").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/student-disciplines/{id}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/student-disciplines/student/{cpf}").permitAll()
-                                .requestMatchers(HttpMethod.PUT, "/student-disciplines/{id}").permitAll()
-                                .requestMatchers(HttpMethod.DELETE , "/student-disciplines/{id}").permitAll()
+
 
                                 .requestMatchers(HttpMethod.POST, "/grades").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/grades/{id}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/grades/student/{cpf}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/grades/assessment/{assessmentId}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/grades/student/{cpf}/discipline/{disciplineId}").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/grades/assessment/{assessmentId}/grades").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/grades/{id}").permitAll()
 
