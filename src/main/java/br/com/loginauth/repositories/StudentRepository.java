@@ -8,4 +8,6 @@ import java.util.Optional;
 @Repository
 public interface StudentRepository extends UserRepository {
     Optional<User> findByCpf(String cpf);
+    boolean existsByCpf(String cpf);
+
 }

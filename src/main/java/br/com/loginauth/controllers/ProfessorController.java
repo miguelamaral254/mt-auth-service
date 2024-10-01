@@ -1,5 +1,6 @@
 package br.com.loginauth.controllers;
 
+import br.com.loginauth.domain.entities.Professor;
 import br.com.loginauth.dto.ProfessorDTO;
 import br.com.loginauth.dto.ResponseDTO;
 import br.com.loginauth.services.ProfessorService;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/professor")
@@ -27,6 +30,11 @@ public class ProfessorController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    @GetMapping
+    public ResponseEntity<List<Professor>> findAllProfessors() {
+        List<Professor> professors = professorService.findAllProfessors();
+        return ResponseEntity.ok(professors);
+    }
     @PutMapping("/update/{cpf}")
     public ResponseEntity<ResponseDTO> updateProfessor(@PathVariable String cpf, @RequestBody ProfessorDTO body) {
         try {
@@ -36,4 +44,5 @@ public class ProfessorController {
             return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage(), null));
         }
     }
+
 }

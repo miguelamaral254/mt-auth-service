@@ -24,7 +24,7 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     @Autowired
-    private SecurityFilter securityFilter;  // Seu filtro de segurança customizado
+    private SecurityFilter securityFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -50,6 +50,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/professor/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/professor/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/professor/update/{cpf}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/professor").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "/coordination/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/coordination/{cpf}").permitAll()
@@ -78,9 +79,14 @@ public class SecurityConfig {
 
 
                                 .requestMatchers(HttpMethod.POST, "/student-disciplines").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/student-disciplines").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/student-disciplines/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/student-disciplines/student/{cpf}/disciplines").permitAll()
+
 
 
                                 .requestMatchers(HttpMethod.POST, "/grades").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/grades").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/grades/{id}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/grades/student/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/grades/student/{cpf}/discipline/{disciplineId}").permitAll()

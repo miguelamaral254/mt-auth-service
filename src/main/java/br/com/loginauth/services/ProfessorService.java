@@ -5,6 +5,7 @@ import br.com.loginauth.domain.entities.User;
 import br.com.loginauth.domain.enums.Role;
 import br.com.loginauth.dto.ProfessorDTO;
 import br.com.loginauth.exceptions.ProfessorNotFoundException;
+import br.com.loginauth.repositories.ProfessorRepository;
 import br.com.loginauth.repositories.UserRepository;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,8 @@ public class ProfessorService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final ProfessorRepository professorRepository;
+    private final UserRepository userRepository;
 
     public void registerProfessor(ProfessorDTO body) {
         Optional<User> user = repository.findByCpf(body.cpf());
@@ -51,6 +56,8 @@ public class ProfessorService {
     public Optional<User> findByCpf(String cpf) {
         return repository.findByCpf(cpf);
     }
+
+
     public void updateProfessor(String cpf, ProfessorDTO body) {
         User existingUser = repository.findByCpf(cpf)
                 .orElseThrow(() -> new ProfessorNotFoundException("Professor not found"));
@@ -70,6 +77,22 @@ public class ProfessorService {
         } else {
             throw new ProfessorNotFoundException("User is not a professor");
         }
+    }
+    public List<Professor> findAllProfessors() {
+        return userRepository.findAll().stream()
+                .filter(user -> user.getRole() == Role.PROFESSOR) // Filtra os professores
+                .map(user -> {
+                    Professor professor = new Professor();
+                    professor.setCpf(user.getCpf());
+                    professor.setName(user.getName());
+                    professor.setEmail(user.getEmail());
+                    professor.setPassword(user.getPassword());
+                    professor.setActive(user.isActive());
+                    professor.setCreateDate(user.getCreateDate());
+                    // Aqui você pode setar os outros atributos do professor se necessário
+                    return professor;
+                })
+                .collect(Collectors.toList());
     }
 
 }

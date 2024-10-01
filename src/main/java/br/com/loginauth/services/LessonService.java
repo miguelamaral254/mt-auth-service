@@ -1,9 +1,6 @@
 package br.com.loginauth.services;
 
-import br.com.loginauth.domain.entities.Discipline;
-import br.com.loginauth.domain.entities.Lesson;
-import br.com.loginauth.domain.entities.Professor;
-import br.com.loginauth.domain.entities.SchoolClass;
+import br.com.loginauth.domain.entities.*;
 import br.com.loginauth.dto.LessonDTO;
 import br.com.loginauth.dto.DisciplineDTO;
 import br.com.loginauth.dto.ProfessorDTO;
@@ -11,15 +8,13 @@ import br.com.loginauth.dto.SchoolClassDTO;
 import br.com.loginauth.exceptions.DisciplineNotFoundException;
 import br.com.loginauth.exceptions.ProfessorNotFoundException;
 import br.com.loginauth.exceptions.SchoolClassNotFoundException;
-import br.com.loginauth.repositories.DisciplineRepository;
-import br.com.loginauth.repositories.LessonRepository;
-import br.com.loginauth.repositories.ProfessorRepository;
-import br.com.loginauth.repositories.SchoolClassRepository;
+import br.com.loginauth.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +31,8 @@ public class LessonService {
 
     @Autowired
     private SchoolClassRepository schoolClassRepository;
+    @Autowired
+    private StudentDisciplineRepository studentDisciplineRepository;
 
     public LessonDTO createLesson(LessonDTO lessonDTO) {
         Discipline discipline = disciplineRepository.findById(lessonDTO.discipline().id())
@@ -56,8 +53,26 @@ public class LessonService {
         lesson.setSchoolClass(schoolClass);
         lesson.setName(lessonDTO.name());
 
-        return mapToDTO(lessonRepository.save(lesson));
+        // Salve a lição
+        Lesson savedLesson = lessonRepository.save(lesson);
+
+        // Vincule todos os alunos da turma à nova lição
+        schoolClass.getStudents().forEach(student -> {
+            // Verifique se já existe uma associação entre o aluno e a disciplina
+            Optional<StudentDiscipline> existingStudentDiscipline = studentDisciplineRepository
+                    .findByStudentCpfAndDisciplineId(student.getCpf(), discipline.getId());
+
+            if (existingStudentDiscipline.isEmpty()) {
+                StudentDiscipline studentDiscipline = new StudentDiscipline();
+                studentDiscipline.setStudent(student);
+                studentDiscipline.setDiscipline(discipline); // Assumindo que você queira vincular à disciplina da lição
+                studentDisciplineRepository.save(studentDiscipline);
+            }
+        });
+
+        return mapToDTO(savedLesson);
     }
+
 
     private LessonDTO mapToDTO(Lesson lesson) {
         return new LessonDTO(

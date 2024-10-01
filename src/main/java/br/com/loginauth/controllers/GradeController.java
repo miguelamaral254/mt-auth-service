@@ -22,8 +22,12 @@ public class GradeController {
 
     // Endpoint para criar uma nova Grade associada a um StudentDiscipline
     @PostMapping
-    public Grade createGrade(@RequestBody GradeCreateDTO dto) {
+    public GradeResponseDTO createGrade(@RequestBody GradeCreateDTO dto) {
         return gradeService.createGrade(dto);
+    }
+    @GetMapping
+    public List<GradeResponseDTO> getAllGrades() {
+        return gradeService.GetAllGrades();
     }
 
     @GetMapping("/student/{cpf}")

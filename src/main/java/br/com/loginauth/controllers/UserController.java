@@ -24,49 +24,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-/*
-    @PostMapping("/register/student")
-    public ResponseEntity<ResponseDTO> registerStudent(@RequestBody StudentDTO body) {
-        try {
-            userService.registerStudent(body);
-            return ResponseEntity.ok(new ResponseDTO("Student registered successfully", null));
-        } catch (UserAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage(), null));
-        }
-    }
 
-    @PostMapping("/register/parent")
-    public ResponseEntity<ResponseDTO> registerParent(@RequestBody ParentDTO body) {
-        try {
-            userService.registerParent(body);
-            return ResponseEntity.ok(new ResponseDTO("Parent registered successfully", null));
-        } catch (UserAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage(), null));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage(), null));
-        }
-    }
-
-    @PostMapping("/register/professor")
-    public ResponseEntity<ResponseDTO> registerProfessor(@RequestBody ProfessorDTO body) {
-        try {
-            userService.registerProfessor(body);
-            return ResponseEntity.ok(new ResponseDTO("Professor registered successfully", null));
-        } catch (UserAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage(), null));
-        }
-    }
-
-    @PostMapping("/register/coordination")
-    public ResponseEntity<ResponseDTO> registerCoordination(@RequestBody CoordinationDTO body) {
-        try {
-            userService.registerCoordination(body);
-            return ResponseEntity.ok(new ResponseDTO("Coordination registered successfully", null));
-        } catch (UserAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage(), null));
-        }
-    }
-*/
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
