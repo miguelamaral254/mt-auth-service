@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,8 +30,7 @@ public class LessonService {
 
     @Autowired
     private SchoolClassRepository schoolClassRepository;
-    @Autowired
-    private StudentDisciplineRepository studentDisciplineRepository;
+
 
     public LessonDTO createLesson(LessonDTO lessonDTO) {
         Discipline discipline = disciplineRepository.findById(lessonDTO.discipline().id())
@@ -57,18 +55,7 @@ public class LessonService {
         Lesson savedLesson = lessonRepository.save(lesson);
 
         // Vincule todos os alunos da turma à nova lição
-        schoolClass.getStudents().forEach(student -> {
-            // Verifique se já existe uma associação entre o aluno e a disciplina
-            Optional<StudentDiscipline> existingStudentDiscipline = studentDisciplineRepository
-                    .findByStudentCpfAndDisciplineId(student.getCpf(), discipline.getId());
 
-            if (existingStudentDiscipline.isEmpty()) {
-                StudentDiscipline studentDiscipline = new StudentDiscipline();
-                studentDiscipline.setStudent(student);
-                studentDiscipline.setDiscipline(discipline); // Assumindo que você queira vincular à disciplina da lição
-                studentDisciplineRepository.save(studentDiscipline);
-            }
-        });
 
         return mapToDTO(savedLesson);
     }

@@ -21,7 +21,6 @@ public class Student extends User {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
-
     private String address;
     private String phone;
 }

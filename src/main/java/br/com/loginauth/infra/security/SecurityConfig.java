@@ -77,14 +77,6 @@ public class SecurityConfig {
 
 
 
-
-                                .requestMatchers(HttpMethod.POST, "/student-disciplines").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/student-disciplines").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/student-disciplines/{id}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/student-disciplines/student/{cpf}/disciplines").permitAll()
-
-
-
                                 .requestMatchers(HttpMethod.POST, "/grades").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/grades").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/grades/{id}").permitAll()
