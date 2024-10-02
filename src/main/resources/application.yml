@@ -2,17 +2,17 @@ spring:
   application:
     name: login-auth-api
   datasource:
-    url: jdbc:mysql://localhost:3306/mt_db
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 32412294
+    url: jdbc:postgresql://ep-noisy-bread-a49f2z0x-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require
+    driver-class-name: org.postgresql.Driver
+    username: default
+    password: mn83xAsSPcvR
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 api:
   security:

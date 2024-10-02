@@ -38,11 +38,21 @@
             <version>4.4.0</version>
         </dependency>
 
-        <!-- Conector JDBC para MySQL -->
+        <!-- Conector JDBC para MySQL
+
+
         <dependency>
             <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <artifactId>postg</artifactId>
             <version>8.0.33</version>
+        </dependency>
+         -->
+
+        <!-- Conector JDBC para PostgreSQL -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.0</version>
         </dependency>
 
         <!-- Starter do Spring Boot para JPA (Java Persistence API) -->
