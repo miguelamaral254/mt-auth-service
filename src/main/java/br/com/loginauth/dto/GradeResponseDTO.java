@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
 
 // DTO para responder com as informações da Grade
 public record GradeResponseDTO(
-        Long gradeId,                   // ID da Grade
-        String studentCpf,              // CPF do estudante
-        Long disciplineId,              // ID da disciplina
-        String disciplineName,          // Nome da disciplina
-        Double evaluation,              // Nota da avaliação
-        EvaluationType evaluationType,  // Tipo da avaliação (AV1, AV2, etc)
-        LocalDateTime evaluationDate    // Data da avaliação
+        Long gradeId,
+        String studentCpf,
+        Long disciplineId,
+        String disciplineName,
+        Double evaluation,
+        EvaluationType evaluationType,
+        LocalDateTime evaluationDate
 ) {}
