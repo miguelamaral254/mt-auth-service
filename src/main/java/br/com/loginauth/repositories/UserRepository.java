@@ -13,3 +13,10 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByCpf(String cpf);
 
 }
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByCpf(String cpf);
+
+    List<User> findByRole(String role);
+}
