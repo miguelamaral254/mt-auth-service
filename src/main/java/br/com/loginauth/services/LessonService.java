@@ -50,11 +50,11 @@ public class LessonService {
         lesson.setProfessor(professor);
         lesson.setSchoolClass(schoolClass);
         lesson.setName(lessonDTO.name());
+        lesson.setWeekDay(lessonDTO.weekDay());
 
-        // Salve a lição
         Lesson savedLesson = lessonRepository.save(lesson);
 
-        // Vincule todos os alunos da turma à nova lição
+
 
 
         return mapToDTO(savedLesson);
@@ -77,7 +77,7 @@ public class LessonService {
                 new DisciplineDTO(
                         lesson.getDiscipline().getId(),
                         lesson.getDiscipline().getName(),
-                        lesson.getDiscipline().getWorkload(), // Incluindo a carga horária
+                        lesson.getDiscipline().getWorkload(),
                         lesson.getDiscipline().getDescription()
 
                 ),
@@ -95,6 +95,7 @@ public class LessonService {
                         lesson.getProfessor().getExpertiseArea(),
                         lesson.getProfessor().getAcademicTitle()
                 ),
+                lesson.getWeekDay(),
                 lesson.getStartTime(),
                 lesson.getEndTime(),
                 lesson.getRoom()

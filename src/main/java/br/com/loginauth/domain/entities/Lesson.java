@@ -1,12 +1,12 @@
 package br.com.loginauth.domain.entities;
 
+import br.com.loginauth.domain.enums.Schedule;
+import br.com.loginauth.domain.enums.Week;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "lessons")
@@ -19,10 +19,9 @@ public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String name;
-
-
 
     @ManyToOne
     @JoinColumn(name = "school_class_id", nullable = false)
@@ -36,11 +35,17 @@ public class Lesson {
     @JoinColumn(name = "professor_cpf", nullable = false)
     private Professor professor;
 
-    @Column(name = "start_time", nullable = false)
-    private LocalDateTime startTime;
+    @Enumerated(EnumType.STRING)
+    @Column(name="week_day", nullable = false)
+    private Week weekDay;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "start_time", nullable = false)
+    private Schedule startTime;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "end_time", nullable = false)
-    private LocalDateTime endTime;
+    private Schedule endTime;
 
     @Column(nullable = false)
     private String room;

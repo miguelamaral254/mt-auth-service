@@ -1,6 +1,8 @@
 package br.com.loginauth.dto;
 
-import java.time.LocalDateTime;
+import br.com.loginauth.domain.enums.Schedule;
+import br.com.loginauth.domain.enums.Week;
+
 
 public record LessonDTO(
         Long id,
@@ -8,7 +10,8 @@ public record LessonDTO(
         SchoolClassDTO schoolClass,
         DisciplineDTO discipline,
         ProfessorDTO professor,
-        LocalDateTime startTime,
-        LocalDateTime endTime,
+        Week weekDay,
+        Schedule startTime,
+        Schedule endTime,
         String room
 ) {}
