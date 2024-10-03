@@ -1,8 +1,12 @@
 package br.com.loginauth.controllers;
 
 import br.com.loginauth.domain.entities.Professor;
+import br.com.loginauth.dto.DisciplineWithClassDTO;
+import br.com.loginauth.dto.LessonDTO;
 import br.com.loginauth.dto.ProfessorDTO;
 import br.com.loginauth.dto.ResponseDTO;
+import br.com.loginauth.exceptions.ProfessorNotFoundException;
+import br.com.loginauth.services.LessonService;
 import br.com.loginauth.services.ProfessorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +21,7 @@ import java.util.List;
 public class ProfessorController {
 
     private final ProfessorService professorService;
+    private final LessonService lessonService;
 
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO> registerProfessor(@RequestBody ProfessorDTO body) {
@@ -44,5 +49,20 @@ public class ProfessorController {
             return ResponseEntity.badRequest().body(new ResponseDTO(e.getMessage(), null));
         }
     }
-
+    @GetMapping("/{cpf}/disciplines")
+    public ResponseEntity<List<DisciplineWithClassDTO>> getDisciplinesByProfessorCpf(@PathVariable String cpf) {
+        List<DisciplineWithClassDTO> disciplines = professorService.getDisciplinesByProfessorCpf(cpf);
+        return ResponseEntity.ok(disciplines);
+    }
+    @GetMapping("/professor/{cpf}")
+    public ResponseEntity<List<LessonDTO>> getLessonsByProfessorCpf(@PathVariable String cpf) {
+        try {
+            List<LessonDTO> lessons =  professorService.getLessonsByProfessorCpf(cpf);
+            return ResponseEntity.ok(lessons);
+        } catch (ProfessorNotFoundException e) {
+            return ResponseEntity.notFound().build(); // Retorna 404 se o professor não for encontrado
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build(); // Retorna 500 para outros erros
+        }
+    }
 }

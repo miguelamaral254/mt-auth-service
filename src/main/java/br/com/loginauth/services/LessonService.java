@@ -1,10 +1,7 @@
 package br.com.loginauth.services;
 
 import br.com.loginauth.domain.entities.*;
-import br.com.loginauth.dto.LessonDTO;
-import br.com.loginauth.dto.DisciplineDTO;
-import br.com.loginauth.dto.ProfessorDTO;
-import br.com.loginauth.dto.SchoolClassDTO;
+import br.com.loginauth.dto.*;
 import br.com.loginauth.exceptions.DisciplineNotFoundException;
 import br.com.loginauth.exceptions.ProfessorNotFoundException;
 import br.com.loginauth.exceptions.SchoolClassNotFoundException;
@@ -82,18 +79,10 @@ public class LessonService {
 
                 ),
 
-                new ProfessorDTO(
+                new ProfessorResponseDTO(
                         lesson.getProfessor().getName(),
-                        lesson.getProfessor().getCpf(),
-                        lesson.getProfessor().getPassword(),
-                        lesson.getProfessor().isActive(),
-                        lesson.getProfessor().getEmail(),
-                        lesson.getProfessor().getBirthDate().toLocalDate(),
-                        lesson.getProfessor().getAddress(),
-                        lesson.getProfessor().getPhone(),
-                        lesson.getProfessor().getRegistration(),
-                        lesson.getProfessor().getExpertiseArea(),
-                        lesson.getProfessor().getAcademicTitle()
+                        lesson.getProfessor().getCpf()
+
                 ),
                 lesson.getWeekDay(),
                 lesson.getStartTime(),
