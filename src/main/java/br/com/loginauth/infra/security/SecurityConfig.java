@@ -43,6 +43,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/student/{cpf}/lessons").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/student/update/{cpf}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/student/{cpf}/disciplines").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/student").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "/parent/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/parent/{cpf}").permitAll()

@@ -1,10 +1,12 @@
 package br.com.loginauth.controllers;
 
+import br.com.loginauth.domain.entities.Student;
 import br.com.loginauth.domain.entities.User;
 import br.com.loginauth.dto.LessonDTO;
 import br.com.loginauth.dto.ResponseDTO;
 import br.com.loginauth.dto.StudentDTO;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
+import br.com.loginauth.repositories.StudentRepository;
 import br.com.loginauth.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class StudentController {
 
     private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
 
     @PostMapping("/register")
@@ -51,5 +54,10 @@ public class StudentController {
         return ResponseEntity.ok(lessons);
     }
 
+    @GetMapping()
+    public ResponseEntity<List<User>> getAllStudents() {
+        List<User> students = studentService.findAllStudents();
+        return ResponseEntity.ok(students);
+    }
 
 }

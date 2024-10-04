@@ -29,6 +29,23 @@ public class StudentService {
     private final PasswordEncoder passwordEncoder;
     private final StudentRepository studentRepository;
     private final LessonRepository lessonRepository;
+    private final UserRepository userRepository;
+
+    public List<User> findAllStudents() {
+        return userRepository.findAll().stream()
+                .filter(user -> user.getRole() == Role.STUDENT) // Filtra os estudantes
+                .map(user -> {
+                    User student = new User();
+                    student.setCpf(user.getCpf());
+                    student.setName(user.getName());
+                    student.setEmail(user.getEmail());
+                    student.setPassword(user.getPassword());
+                    student.setActive(user.isActive());
+                    student.setCreateDate(user.getCreateDate());
+                    return student;
+                })
+                .collect(Collectors.toList());
+    }
 
     public void registerStudent(StudentDTO body) {
         Optional<User> user = repository.findByCpf(body.cpf());
