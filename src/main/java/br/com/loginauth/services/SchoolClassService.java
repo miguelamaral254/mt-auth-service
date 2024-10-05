@@ -84,12 +84,10 @@ public class SchoolClassService {
                 .orElseThrow(() -> new SchoolClassNotFoundException("SchoolClass not found with id " + schoolClassId));
 
         return schoolClass.getStudents().stream()
-                .map(student -> {
-                    StudentResponseDTO dto = new StudentResponseDTO();
-                    dto.setCpf(student.getCpf());
-                    dto.setName(student.getName());
-                    return dto;
-                })
+                .map(student -> new StudentResponseDTO(
+                        student.getCpf(),
+                        student.getName()
+                ))
                 .collect(Collectors.toList());
     }
 

@@ -32,7 +32,6 @@ public class LessonService {
 
 
     public LessonDTO createLesson(LessonDTO lessonDTO) {
-        // Verificar se já existe uma lição com o mesmo dia e horário para a turma especificada
         Optional<Lesson> existingLessonByClass = lessonRepository.findByWeekDayAndStartTimeAndSchoolClassId(
                 lessonDTO.weekDay(), lessonDTO.startTime(), lessonDTO.schoolClass().id());
 
@@ -41,7 +40,6 @@ public class LessonService {
                     + lessonDTO.weekDay() + " às " + lessonDTO.startTime() + " para a turma " + lessonDTO.schoolClass().id());
         }
 
-        // Verificar se já existe uma lição no mesmo dia e horário em que o professor já está ocupado
         Optional<Lesson> existingLessonByProfessor = lessonRepository.findByWeekDayAndStartTimeAndProfessorCpf(
                 lessonDTO.weekDay(), lessonDTO.startTime(), lessonDTO.professor().cpf());
 
@@ -73,10 +71,8 @@ public class LessonService {
         lesson.setName(lessonDTO.name());
         lesson.setWeekDay(lessonDTO.weekDay());
 
-        // Salvar a nova lição no repositório
         Lesson savedLesson = lessonRepository.save(lesson);
 
-        // Retornar o DTO da lição criada
         return mapToDTO(savedLesson);
     }
 

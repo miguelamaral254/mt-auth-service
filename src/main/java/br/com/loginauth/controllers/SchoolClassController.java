@@ -31,7 +31,7 @@ public class SchoolClassController {
     @PostMapping("/addstudent")
     public ResponseEntity<SchoolClass> addStudentToClass(@RequestBody AddStudentRequest request) {
         try {
-            SchoolClass updatedSchoolClass = schoolClassService.addStudentToClass(request.getClassId(), request.getCpf());
+            SchoolClass updatedSchoolClass = schoolClassService.addStudentToClass(request.classId(), request.cpf());
             return new ResponseEntity<>(updatedSchoolClass, HttpStatus.OK);
         } catch (StudentAlreadyExistsException e) {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
@@ -39,6 +39,7 @@ public class SchoolClassController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
 
     @DeleteMapping("/{classId}/students/{studentCpf}")
     public ResponseEntity<Void> removeStudentFromClass(@PathVariable Long classId, @PathVariable String studentCpf) {

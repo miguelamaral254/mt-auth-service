@@ -5,6 +5,7 @@ import br.com.loginauth.domain.entities.User;
 import br.com.loginauth.dto.LessonDTO;
 import br.com.loginauth.dto.ResponseDTO;
 import br.com.loginauth.dto.StudentDTO;
+import br.com.loginauth.dto.StudentLessonResponseDTO;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
 import br.com.loginauth.repositories.StudentRepository;
 import br.com.loginauth.services.StudentService;
@@ -49,8 +50,8 @@ public class StudentController {
         }
     }
     @GetMapping("/{cpf}/lessons")
-    public ResponseEntity<List<LessonDTO>> getLessonsByStudentCpf(@PathVariable String cpf) {
-        List<LessonDTO> lessons = studentService.getLessonsByStudentCpf(cpf);
+    public ResponseEntity<List<StudentLessonResponseDTO>> getLessonsByStudentCpf(@PathVariable String cpf) {
+        List<StudentLessonResponseDTO> lessons = studentService.getLessonsByStudentCpf(cpf);
         return ResponseEntity.ok(lessons);
     }
 

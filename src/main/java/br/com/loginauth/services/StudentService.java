@@ -89,27 +89,24 @@ public class StudentService {
             throw new StudentNotFoundException("Student not found");
         }
     }
-    public List<LessonDTO> getLessonsByStudentCpf(String cpf) {
-        // Verifica se o aluno existe
+    public List<StudentLessonResponseDTO> getLessonsByStudentCpf(String cpf) {
+
         Optional<User> studentOpt = studentRepository.findByCpf(cpf);
         if (studentOpt.isEmpty()) {
             throw new StudentNotFoundException("Student not found with CPF " + cpf);
         }
-
-        // Obtém o aluno (User)
         User student = studentOpt.get();
 
-        // Filtra as lições associadas ao aluno pelo CPF
         List<Lesson> lessons = lessonRepository.findAll().stream()
                 .filter(lesson -> lesson.getSchoolClass().getStudents().stream()
                         .anyMatch(s -> s.getCpf().equals(cpf)))
                 .collect(Collectors.toList());
 
-        // Mapeia as lições para o DTO correspondente
+
         return lessons.stream()
-                .map(lesson -> new LessonDTO(
+                .map(lesson -> new StudentLessonResponseDTO(
                         lesson.getId(),
-                        lesson.getName(), // Presumindo que Lesson possui um método getName()
+                        lesson.getName(),
                         new SchoolClassDTO(
                                 lesson.getSchoolClass().getId(),
                                 lesson.getSchoolClass().getLetter(),
@@ -125,14 +122,21 @@ public class StudentService {
                                 lesson.getDiscipline().getWorkload(), // Se aplicável
                                 lesson.getDiscipline().getDescription() // Se aplicável
                         ),
-                        new ProfessorResponseDTO(
+                        new StudentResponseDTO(
                                 student.getCpf(),
                                 student.getName()
+
                         ),
-                        lesson.getWeekDay(), // Presumindo que Lesson possui um método getWeekDay()
-                        lesson.getStartTime(), // Presumindo que Lesson possui um método getStartTime()
-                        lesson.getEndTime(), // Presumindo que Lesson possui um método getEndTime()
-                        lesson.getRoom() // Presumindo que Lesson possui um método getRoom()
+                        new ProfessorResponseDTO(
+                                lesson.getProfessor().getName(),
+                                lesson.getProfessor().getCpf()
+
+                        ),
+
+                        lesson.getWeekDay(),
+                        lesson.getStartTime(),
+                        lesson.getEndTime(),
+                        lesson.getRoom()
                 ))
                 .distinct()
                 .collect(Collectors.toList());
