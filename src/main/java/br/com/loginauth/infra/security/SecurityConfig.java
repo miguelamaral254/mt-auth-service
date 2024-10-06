@@ -57,6 +57,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/professor/professor/{cpf}").permitAll()
 
 
+                                .requestMatchers(HttpMethod.POST, "/notifications/send").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/notifications/user").permitAll()
+
 
                                 .requestMatchers(HttpMethod.POST, "/coordination/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/coordination/{cpf}").permitAll()
