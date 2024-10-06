@@ -25,53 +25,49 @@ public class GradeService {
     }
 
     public Grade createGrade(CreateGradeDTO createGradeDTO) {
-        // Criando a nova grade
-        Grade grade = new Grade();
-        grade.setStudentCpf(createGradeDTO.studentCpf());
-        grade.setDisciplineId(createGradeDTO.disciplineId());
-        grade.setEvaluation(createGradeDTO.evaluation());
-        grade.setEvaluationType(createGradeDTO.evaluationType());
-        grade.setEvaluationDate(LocalDateTime.now()); // Data atual
+        List<Grade> existingGrades = gradeRepository.findByStudentCpfAndDisciplineIdAndEvaluationType(
+                createGradeDTO.studentCpf(),
+                createGradeDTO.disciplineId(),
+                createGradeDTO.evaluationType()
+        );
 
-        // Salvando a nova grade no banco de dados
-        return gradeRepository.save(grade);
+        if (!existingGrades.isEmpty()) {
+            Grade existingGrade = existingGrades.get(0);
+            existingGrade.setEvaluation(createGradeDTO.evaluation());
+            existingGrade.setEvaluationDate(LocalDateTime.now());
+            return gradeRepository.save(existingGrade);
+        } else {
+            Grade grade = new Grade();
+            grade.setStudentCpf(createGradeDTO.studentCpf());
+            grade.setDisciplineId(createGradeDTO.disciplineId());
+            grade.setEvaluation(createGradeDTO.evaluation());
+            grade.setEvaluationType(createGradeDTO.evaluationType());
+            grade.setEvaluationDate(LocalDateTime.now());
+            return gradeRepository.save(grade);
+        }
     }
-
 
     public List<Grade> getAllGrades() {
         return gradeRepository.findAll();
     }
 
-
     public List<Grade> getGradesByStudentCpf(String cpf) {
-        // Verificando se o estudante existe
         Optional<User> studentOpt = studentRepository.findByCpf(cpf);
         if (studentOpt.isEmpty()) {
             throw new StudentNotFoundException("Student not found with CPF " + cpf);
         }
-
-        // Buscando todas as grades
-        List<Grade> grades = gradeRepository.findAll();
-
-        // Filtrando as grades que pertencem ao estudante com o CPF fornecido
-        return grades.stream()
+        return gradeRepository.findAll().stream()
                 .filter(grade -> grade.getStudentCpf().equals(cpf))
                 .collect(Collectors.toList());
     }
+
     public List<Grade> getGradesByStudentCpfAndDiscipline(String cpf, Long disciplineId) {
-        // Verificando se o estudante existe
         Optional<User> studentOpt = studentRepository.findByCpf(cpf);
         if (studentOpt.isEmpty()) {
             throw new StudentNotFoundException("Student not found with CPF " + cpf);
         }
-
-        // Buscando todas as grades
-        List<Grade> grades = gradeRepository.findAll();
-
-        // Filtrando as grades que pertencem ao estudante com o CPF fornecido e à disciplina específica
-        return grades.stream()
+        return gradeRepository.findAll().stream()
                 .filter(grade -> grade.getStudentCpf().equals(cpf) && grade.getDisciplineId().equals(disciplineId))
                 .collect(Collectors.toList());
     }
-
 }
