@@ -54,4 +54,16 @@ public class LessonController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<LessonDTO> updateLesson(@PathVariable Long id, @RequestBody LessonDTO lessonDTO) {
+        try {
+            LessonDTO updatedLesson = lessonService.updateLesson(id, lessonDTO);
+            return ResponseEntity.ok(updatedLesson);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build(); 
+        }
+    }
+
 }

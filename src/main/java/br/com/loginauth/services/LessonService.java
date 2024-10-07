@@ -125,4 +125,54 @@ public class LessonService {
                 .orElseThrow(() -> new EntityNotFoundException("Lesson not found with name " + name));
         return mapToDTO(lesson);
     }
+    public LessonDTO updateLesson(Long id, LessonDTO lessonDTO) {
+        // Encontrar a lição existente pelo ID
+        Lesson existingLesson = lessonRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Lição não encontrada com o ID " + id));
+
+        // Verificar se existe conflito de horários para a turma
+        Optional<Lesson> existingLessonByClass = lessonRepository.findByWeekDayAndStartTimeAndSchoolClassId(
+                lessonDTO.weekDay(), lessonDTO.startTime(), lessonDTO.schoolClass().id());
+
+        if (existingLessonByClass.isPresent() && !existingLessonByClass.get().getId().equals(id)) {
+            throw new LessonConflictException("Já existe uma aula para a turma no dia "
+                    + lessonDTO.weekDay() + " às " + lessonDTO.startTime() + " para a turma " + lessonDTO.schoolClass().id());
+        }
+
+        // Verificar se existe conflito de horários para o professor
+        Optional<Lesson> existingLessonByProfessor = lessonRepository.findByWeekDayAndStartTimeAndProfessorCpf(
+                lessonDTO.weekDay(), lessonDTO.startTime(), lessonDTO.professor().cpf());
+
+        if (existingLessonByProfessor.isPresent() && !existingLessonByProfessor.get().getId().equals(id)) {
+            throw new LessonConflictException("O professor " + lessonDTO.professor().cpf() +
+                    " já possui uma aula no dia " + lessonDTO.weekDay() + " às " + lessonDTO.startTime());
+        }
+
+        // Encontrar a disciplina pelo ID fornecido
+        Discipline discipline = disciplineRepository.findById(lessonDTO.discipline().id())
+                .orElseThrow(() -> new DisciplineNotFoundException("Disciplina não encontrada com o ID " + lessonDTO.discipline().id()));
+
+        // Encontrar o professor pelo CPF fornecido
+        Professor professor = (Professor) professorRepository.findByCpf(lessonDTO.professor().cpf())
+                .orElseThrow(() -> new ProfessorNotFoundException("Professor não encontrado com o CPF " + lessonDTO.professor().cpf()));
+
+        // Encontrar a turma pelo ID fornecido
+        SchoolClass schoolClass = schoolClassRepository.findById(lessonDTO.schoolClass().id())
+                .orElseThrow(() -> new SchoolClassNotFoundException("Turma não encontrada com o ID " + lessonDTO.schoolClass().id()));
+
+        // Atualizar os dados da lição existente
+        existingLesson.setName(lessonDTO.name());
+        existingLesson.setWeekDay(lessonDTO.weekDay());
+        existingLesson.setStartTime(lessonDTO.startTime());
+        existingLesson.setEndTime(lessonDTO.endTime());
+        existingLesson.setRoom(lessonDTO.room());
+        existingLesson.setDiscipline(discipline);
+        existingLesson.setProfessor(professor);
+        existingLesson.setSchoolClass(schoolClass);
+
+        // Salvar a lição atualizada
+        Lesson updatedLesson = lessonRepository.save(existingLesson);
+
+        return mapToDTO(updatedLesson);
+    }
 }

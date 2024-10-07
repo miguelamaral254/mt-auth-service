@@ -9,9 +9,9 @@ public enum Schedule {
     ELEVEN_TEN,     // 11:10
     TWELVE_O_CLOCK, // 12:00
     ONE_THIRTY,     // 13:30
-    ONE_FORTY,      // 14:20
+    FOURTEEN_TWENTY,      // 14:20
     FIFTEEN_TEN,    // 15:10
     FIFTEEN_THIRTY, // 15:30
-    FOUR_TEN,   // 16:10
+    FOURTEEN_TEN,   // 16:10
     FIVE_THIRTY     // 17:00
 }
