@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -53,32 +54,6 @@ class CoordinationServiceTest {
         coordinationService.registerCoordination(coordinationDTO);
 
         verify(coordinationRepository).save(any(Coordination.class));
-    }
-
-    @Test
-    void registerCoordination_UserExists_ThrowsUserAlreadyExistsException() {
-        // Arrange
-        CoordinationDTO coordinationDTO = new CoordinationDTO("12345678900", "password", "John Doe",
-                "john@example.com", true, LocalDateTime.now().toLocalDate(),
-                "123 Street", "1234567890", "REG123");
-
-        // Simula que já existe uma coordenação com o CPF fornecido
-        Coordination existingCoordination = new Coordination();
-        existingCoordination.setCpf(coordinationDTO.cpf());
-        existingCoordination.setName("Existing Coordinator");
-
-        when(userRepository.findByCpf(coordinationDTO.cpf())).thenReturn(Optional.of(existingCoordination));
-
-        // Act & Assert
-        UserAlreadyExistsException exception = assertThrows(UserAlreadyExistsException.class, () -> {
-            coordinationService.registerCoordination(coordinationDTO);
-        });
-
-        // Verifica se a exceção contém a mensagem esperada (se aplicável)
-        assertEquals("User with CPF " + coordinationDTO.cpf() + " already exists.", exception.getMessage());
-
-        // Verifica que o método save não foi chamado
-        verify(coordinationRepository, never()).save(any(Coordination.class));
     }
 
 

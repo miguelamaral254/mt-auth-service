@@ -13,5 +13,5 @@ public enum Schedule {
     FIFTEEN_TEN,    // 15:10
     FIFTEEN_THIRTY, // 15:30
     FOURTEEN_TEN,   // 16:10
-    FIVE_THIRTY     // 17:00
+    SEVENTEEN_O_CLOCK        // 17:00
 }

@@ -25,10 +25,12 @@ public class NotificationService {
     @Autowired
     private UserRepository userRepository;
 
-    public void sendNotificationToRole(Role role, String message) {
+    public void sendNotificationToRole(Role role, String header, String message) {
         List<User> usersWithRole = userRepository.findByRole(role);
         for (User user : usersWithRole) {
             Notification notification = new Notification();
+
+            notification.setHeader(header); // Set the header
             notification.setMessage(message);
             notification.setTimestamp(LocalDateTime.now());
             notification.setUser(user);
@@ -43,6 +45,7 @@ public class NotificationService {
         return notificationRepository.findByUser(user).stream()
                 .map(notification -> new NotificationDTO(
                         notification.getId(),
+                        notification.getHeader(),
                         notification.getMessage(),
                         notification.getTimestamp(),
                         notification.isRead()
@@ -55,6 +58,6 @@ public class NotificationService {
                 .orElseThrow(() -> new NotificationNotFoundException("Notification not found with id " + request.id()));
         notification.setRead(request.read());
         notificationRepository.save(notification);
-        return new NotificationDTO(notification.getId(), notification.getMessage(), notification.getTimestamp(), request.read());
+        return new NotificationDTO(notification.getId(), notification.getHeader(), notification.getMessage(), notification.getTimestamp(), request.read());
     }
 }
