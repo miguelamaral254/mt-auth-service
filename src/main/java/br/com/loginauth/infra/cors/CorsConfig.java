@@ -20,7 +20,8 @@ public class CorsConfig {
         corsConfiguration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",
                 "https://mediotec-plus.vercel.app",
-                "https://mediotec-frontend-fqikv39no-miguelamaral254s-projects.vercel.app"  // Add this line
+                "https://mediotec-frontend-fqikv39no-miguelamaral254s-projects.vercel.app",
+                "https://mediotec-plus-atd051rza-miguelamaral254s-projects.vercel.app"
         ));
 
         corsConfiguration.addAllowedHeader("*");
