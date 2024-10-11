@@ -75,6 +75,57 @@ O projeto é composto por vários repositórios, onde cada um é responsável po
 
 Por favor, leia o [COLABORACAO.md](https://github.com/miguelamaral254/mt-auth-service/blob/main/COLABORACAO.md) para obter detalhes sobre o nosso código de conduta e o processo para nos enviar pedidos de solicitação.
 
+## ⌨️ Como rodar o projeto
+
+### Pré-requisitos
+
+Antes de rodar o projeto, você precisará garantir que os seguintes itens estejam instalados:
+
+- [Java 17](https://www.oracle.com/java/technologies/javase-jdk17-downloads.html)
+- [Maven](https://maven.apache.org/)
+- [PostgreSQL](https://www.postgresql.org/download/)
+
+### Configuração do PostgreSQL
+
+Certifique-se de que o PostgreSQL está instalado e rodando. Crie um banco de dados e configure as credenciais no arquivo `application.properties` ou `application.yml` (os detalhes da configuração de conexão com o banco de dados estão mais abaixo).
+
+## Configuração do Projeto
+
+Siga os passos abaixo para rodar o projeto localmente:
+
+### 1. Clonar o repositório
+
+Clone este repositório para o seu ambiente local usando o comando:
+
+### 2. Navegar até o diretório do projeto
+
+Entre no diretório do projeto:
+
+### 3. Configurar o banco de dados
+
+Atualize as informações de conexão com o PostgreSQL no arquivo `src/main/resources/application.properties` ou `application.yml` conforme necessário:
+
+properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/seu_banco
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+### 4. Compilar e rodar o projeto
+
+Compile e rode o projeto com o Maven:
+
+O servidor estará rodando em `http://localhost:8080`.
+
+## Endpoints
+
+A aplicação expõe APIs REST que podem ser acessadas via HTTP. Use ferramentas como [Postman](https://www.postman.com/) para testar os endpoints.
+
+---
+
+Agora seu projeto Spring Boot estará rodando localmente, conectado ao PostgreSQL.
+
 ## 📌 Versão
 
 Nós usamos [SemVer](http://semver.org/) para controle de versão.
