@@ -73,7 +73,7 @@ O projeto é composto por vários repositórios, onde cada um é responsável po
 
 ## 🖇️ Colaborando
 
-Por favor, leia o [COLABORACAO.md](https://github.com/miguelamaral254/api-mediotec/blob/main/COLABORACAO.md) para obter detalhes sobre o nosso código de conduta e o processo para nos enviar pedidos de solicitação.
+Por favor, leia o [COLABORACAO.md](https://github.com/miguelamaral254/mt-auth-service/blob/main/COLABORACAO.md) para obter detalhes sobre o nosso código de conduta e o processo para nos enviar pedidos de solicitação.
 
 ## 📌 Versão
 
@@ -92,7 +92,7 @@ Esses são os membros que ajudaram a desenvolver o projeto desde o seu início
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT - veja o arquivo [LICENSE.md](https://github.com/miguelamaral254/api-mediotec/blob/main/LICENSE) para detalhes.
+Este projeto está sob a licença MIT - veja o arquivo [LICENSE.md](https://github.com/miguelamaral254/mt-auth-service/blob/main/LICENSE) para detalhes.
 
 ## 🎁 Agradecimentos
 
