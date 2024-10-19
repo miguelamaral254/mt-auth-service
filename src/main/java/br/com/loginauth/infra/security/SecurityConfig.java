@@ -115,9 +115,12 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",
+                "http://localhost:8081",
                 "https://mediotec-plus.vercel.app",
-                "https://mediotec-frontend.vercel.app",
-                "https://mediotec-plus-atd051rza-miguelamaral254s-projects.vercel.app"));
+                "https://mediotec-frontend-fqikv39no-miguelamaral254s-projects.vercel.app",
+                "https://mediotec-plus-atd051rza-miguelamaral254s-projects.vercel.app",
+                "http://192.168.1.43:8081"
+        ));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
