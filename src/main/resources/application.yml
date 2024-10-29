@@ -2,10 +2,10 @@ spring:
   application:
     name: login-auth-api
   datasource:
-    url: jdbc:postgresql://ep-noisy-bread-a49f2z0x-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require
+    url: jdbc:postgresql://ep-dawn-sun-a4vsntig-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require
     driver-class-name: org.postgresql.Driver
     username: default
-    password: mn83xAsSPcvR
+    password: VUZH5N0jvJet
   jpa:
     show-sql: true
     hibernate:
@@ -20,4 +20,4 @@ api:
       secret: key-3241-key
 
 server:
-  port: 8080  
+  port: 8080
