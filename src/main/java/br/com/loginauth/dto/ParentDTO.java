@@ -1,6 +1,7 @@
 package br.com.loginauth.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record ParentDTO(
         String name,
@@ -11,5 +12,5 @@ public record ParentDTO(
         LocalDate birthDate,
         String address,
         String phone,
-        String studentCpf 
+        List<String> studentCpfs 
 ) {}

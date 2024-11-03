@@ -1,5 +1,4 @@
 package br.com.loginauth.services;
-
 import br.com.loginauth.domain.entities.Parent;
 import br.com.loginauth.domain.entities.Student;
 import br.com.loginauth.domain.entities.User;
@@ -15,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,10 +32,16 @@ public class ParentService {
             throw new UserAlreadyExistsException("User already exists");
         }
 
-        Optional<User> student = repository.findByCpf(body.studentCpf());
-        if (student.isEmpty() || !(student.get() instanceof Student)) {
-            throw new StudentNotFoundException("Student does not exist");
-        }
+        // Busca e valida cada estudante a partir da lista de CPFs fornecidos
+        List<Student> students = body.studentCpfs().stream()
+                .map(cpf -> {
+                    Optional<User> studentUser = repository.findByCpf(cpf);
+                    if (studentUser.isEmpty() || !(studentUser.get() instanceof Student)) {
+                        throw new StudentNotFoundException("Student with CPF " + cpf + " does not exist");
+                    }
+                    return (Student) studentUser.get();
+                })
+                .collect(Collectors.toList());
 
         Parent newParent = new Parent();
         newParent.setCpf(body.cpf());
@@ -47,7 +54,7 @@ public class ParentService {
         newParent.setBirthDate(Date.valueOf(body.birthDate()));
         newParent.setAddress(body.address());
         newParent.setPhone(body.phone());
-        newParent.setStudentCPF(body.studentCpf());
+        newParent.setStudents(students);  // Define a lista de estudantes
 
         repository.save(newParent);
     }
@@ -55,6 +62,7 @@ public class ParentService {
     public Optional<User> findByCpf(String cpf) {
         return repository.findByCpf(cpf);
     }
+
     public void updateParent(String cpf, ParentDTO body) {
         Optional<User> existingUser = repository.findByCpf(cpf);
         if (existingUser.isPresent() && existingUser.get() instanceof Parent) {
@@ -65,11 +73,37 @@ public class ParentService {
             parent.setBirthDate(Date.valueOf(body.birthDate()));
             parent.setAddress(body.address());
             parent.setPhone(body.phone());
-            parent.setStudentCPF(body.studentCpf());
+
+            // Atualiza a lista de estudantes
+            List<Student> students = body.studentCpfs().stream()
+                    .map(studentCpf -> {
+                        Optional<User> studentUser = repository.findByCpf(studentCpf);
+                        if (studentUser.isEmpty() || !(studentUser.get() instanceof Student)) {
+                            throw new StudentNotFoundException("Student with CPF " + studentCpf + " does not exist");
+                        }
+                        return (Student) studentUser.get();
+                    })
+                    .collect(Collectors.toList());
+
+            parent.setStudents(students);
+
             repository.save(parent);
         } else {
             throw new ParentNotFoundException("Parent not found");
         }
     }
+    public void addStudentToParent(String parentCpf, String studentCpf) {
+        Parent parent = repository.findByCpf(parentCpf)
+                .filter(Parent.class::isInstance)
+                .map(Parent.class::cast)
+                .orElseThrow(() -> new ParentNotFoundException("Parent not found"));
 
+        Student student = repository.findByCpf(studentCpf)
+                .filter(Student.class::isInstance)
+                .map(Student.class::cast)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found"));
+
+        parent.getStudents().add(student);
+        repository.save(parent);
+    }
 }

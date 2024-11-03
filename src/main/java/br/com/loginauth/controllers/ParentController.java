@@ -3,6 +3,8 @@ package br.com.loginauth.controllers;
 import br.com.loginauth.dto.ParentDTO;
 import br.com.loginauth.dto.ResponseDTO;
 import br.com.loginauth.services.ParentService;
+import br.com.loginauth.exceptions.ParentNotFoundException;
+import br.com.loginauth.exceptions.StudentNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,7 @@ public class ParentController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @PutMapping("/update/{cpf}")
     public ResponseEntity<ResponseDTO> updateParent(@PathVariable String cpf, @RequestBody ParentDTO body) {
         try {
@@ -36,4 +39,15 @@ public class ParentController {
         }
     }
 
+    @PostMapping("/{parentCpf}/add-student/{studentCpf}")
+    public ResponseEntity<ResponseDTO> addStudentToParent(
+            @PathVariable String parentCpf,
+            @PathVariable String studentCpf) {
+        try {
+            parentService.addStudentToParent(parentCpf, studentCpf);
+            return ResponseEntity.ok(new ResponseDTO("Student added to parent successfully", null));
+        } catch (ParentNotFoundException | StudentNotFoundException e) {
+            return ResponseEntity.status(404).body(new ResponseDTO(e.getMessage(), null));
+        }
+    }
 }
