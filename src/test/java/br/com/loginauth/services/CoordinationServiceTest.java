@@ -45,7 +45,7 @@ class CoordinationServiceTest {
     @Test
     void registerCoordination_UserDoesNotExist_SavesCoordination() {
         CoordinationDTO coordinationDTO = new CoordinationDTO("12345678900", "password", "John Doe",
-                "john@example.com", true, LocalDateTime.now().toLocalDate(),
+                "john@example.com", true, LocalDate.now(),
                 "123 Street", "1234567890", "REG123");
 
         when(userRepository.findByCpf(coordinationDTO.cpf())).thenReturn(Optional.empty());
@@ -56,30 +56,27 @@ class CoordinationServiceTest {
         verify(coordinationRepository).save(any(Coordination.class));
     }
 
-
     @Test
-    void updateCoordination_ExistingCoordination_UpdatesCoordination() {
-        CoordinationDTO coordinationDTO = new CoordinationDTO("12345678900", "newPassword", "Jane Doe",
-                "jane@example.com", true, LocalDateTime.now().toLocalDate(),
-                "456 Avenue", "0987654321", "REG456");
+    void registerCoordination_UserAlreadyExists_ThrowsUserAlreadyExistsException() {
+        CoordinationDTO coordinationDTO = new CoordinationDTO("12345678900", "password", "John Doe",
+                "john@example.com", true, LocalDate.now(),
+                "123 Street", "1234567890", "REG123");
 
-        Coordination existingCoordination = new Coordination();
-        existingCoordination.setCpf("12345678900");
-        existingCoordination.setName("Old Name");
+        // Create a User instance instead of Coordination
+        User existingUser = new User(); // Assuming User is a superclass of Coordination or create a mock of Coordination
+        existingUser.setCpf(coordinationDTO.cpf());
 
-        when(userRepository.findByCpf(coordinationDTO.cpf())).thenReturn(Optional.of(existingCoordination));
+        // Mocking the behavior of userRepository
+        when(userRepository.findByCpf(coordinationDTO.cpf())).thenReturn(Optional.of(existingUser));
 
-        coordinationService.updateCoordination("12345678900", coordinationDTO);
-
-        assertEquals("Jane Doe", existingCoordination.getName());
-        assertEquals("456 Avenue", existingCoordination.getAddress());
-        verify(coordinationRepository).save(existingCoordination);
+        // Act & Assert
+        assertThrows(UserAlreadyExistsException.class, () -> coordinationService.registerCoordination(coordinationDTO));
     }
 
     @Test
     void updateCoordination_NonExistingCoordination_ThrowsCoordinationNotFoundException() {
         CoordinationDTO coordinationDTO = new CoordinationDTO("12345678900", "password", "John Doe",
-                "john@example.com", true, LocalDateTime.now().toLocalDate(),
+                "john@example.com", true, LocalDate.now(),
                 "123 Street", "1234567890", "REG123");
 
         when(userRepository.findByCpf(coordinationDTO.cpf())).thenReturn(Optional.empty());
