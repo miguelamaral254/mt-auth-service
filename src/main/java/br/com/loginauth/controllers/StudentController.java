@@ -2,10 +2,9 @@ package br.com.loginauth.controllers;
 
 import br.com.loginauth.domain.entities.Student;
 import br.com.loginauth.domain.entities.User;
-import br.com.loginauth.dto.LessonDTO;
-import br.com.loginauth.dto.ResponseDTO;
-import br.com.loginauth.dto.StudentDTO;
-import br.com.loginauth.dto.StudentLessonResponseDTO;
+import br.com.loginauth.dto.*;
+import br.com.loginauth.exceptions.SchoolClassNotFoundException;
+import br.com.loginauth.exceptions.StudentNotFoundException;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
 import br.com.loginauth.repositories.StudentRepository;
 import br.com.loginauth.services.StudentService;
@@ -60,5 +59,15 @@ public class StudentController {
         List<User> students = studentService.findAllStudents();
         return ResponseEntity.ok(students);
     }
+    @GetMapping("/{cpf}/school-class")
+    public ResponseEntity<SchoolClassDTO> getSchoolClassByStudentCpf(@PathVariable String cpf) {
+        try {
+            SchoolClassDTO schoolClass = studentService.getSchoolClassByStudentCPF(cpf);
+            return ResponseEntity.ok(schoolClass);
+        } catch (StudentNotFoundException | SchoolClassNotFoundException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
 
 }

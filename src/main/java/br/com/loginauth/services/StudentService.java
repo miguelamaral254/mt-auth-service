@@ -1,13 +1,16 @@
 package br.com.loginauth.services;
 
 import br.com.loginauth.domain.entities.Lesson;
+import br.com.loginauth.domain.entities.SchoolClass;
 import br.com.loginauth.domain.entities.Student;
 import br.com.loginauth.domain.entities.User;
 import br.com.loginauth.domain.enums.Role;
 import br.com.loginauth.dto.*;
 import br.com.loginauth.exceptions.ProfessorNotFoundException;
+import br.com.loginauth.exceptions.SchoolClassNotFoundException;
 import br.com.loginauth.exceptions.StudentNotFoundException;
 import br.com.loginauth.repositories.LessonRepository;
+import br.com.loginauth.repositories.SchoolClassRepository;
 import br.com.loginauth.repositories.StudentRepository;
 import br.com.loginauth.repositories.UserRepository;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
@@ -30,10 +33,11 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final LessonRepository lessonRepository;
     private final UserRepository userRepository;
+    private final SchoolClassRepository schoolClassRepository;
 
     public List<User> findAllStudents() {
         return userRepository.findAll().stream()
-                .filter(user -> user.getRole() == Role.STUDENT) // Filtra os estudantes
+                .filter(user -> user.getRole() == Role.STUDENT)
                 .map(user -> {
                     User student = new User();
                     student.setCpf(user.getCpf());
@@ -141,5 +145,27 @@ public class StudentService {
                 .distinct()
                 .collect(Collectors.toList());
     }
+    public SchoolClassDTO getSchoolClassByStudentCPF(String studentCpf) {
+        // Busca o aluno pelo CPF
+        Student student = (Student) studentRepository.findByCpf(studentCpf)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found with CPF " + studentCpf));
+
+
+        SchoolClass schoolClass = schoolClassRepository.findAll().stream()
+                .filter(sc -> sc.getStudents().contains(student))
+                .findFirst()
+                .orElseThrow(() -> new SchoolClassNotFoundException("No school class found for student with CPF " + studentCpf));
+
+        return new SchoolClassDTO(
+                schoolClass.getId(),
+                schoolClass.getLetter(),
+                schoolClass.getShift(),
+                schoolClass.getCode(),
+                schoolClass.getTechnicalCourse(),
+                schoolClass.getYear(),
+                schoolClass.getDate()
+        );
+    }
+
 
 }
