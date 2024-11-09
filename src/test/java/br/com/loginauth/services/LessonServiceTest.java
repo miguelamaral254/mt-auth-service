@@ -3,10 +3,7 @@ package br.com.loginauth.services;
 import br.com.loginauth.domain.entities.*;
 import br.com.loginauth.domain.enums.*;
 import br.com.loginauth.dto.*;
-import br.com.loginauth.exceptions.DisciplineNotFoundException;
-import br.com.loginauth.exceptions.LessonConflictException;
-import br.com.loginauth.exceptions.ProfessorNotFoundException;
-import br.com.loginauth.exceptions.SchoolClassNotFoundException;
+import br.com.loginauth.exceptions.*;
 import br.com.loginauth.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -118,7 +115,7 @@ class LessonServiceTest {
     void testUpdateLessonNotFound() {
         when(lessonRepository.findById(lesson.getId())).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> lessonService.updateLesson(lesson.getId(), lessonDTO));
+        assertThrows(LessonNotFoundException.class, () -> lessonService.updateLesson(lesson.getId(), lessonDTO));
     }
 
     @Test
@@ -135,7 +132,7 @@ class LessonServiceTest {
     void testGetLessonByIdNotFound() {
         when(lessonRepository.findById(lesson.getId())).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> lessonService.getLessonById(lesson.getId()));
+        assertThrows(LessonNotFoundException.class, () -> lessonService.getLessonById(lesson.getId()));
     }
 
     @Test
@@ -152,6 +149,6 @@ class LessonServiceTest {
     void testGetLessonByNameNotFound() {
         when(lessonRepository.findByName(lesson.getName())).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> lessonService.getLessonByName(lesson.getName()));
+        assertThrows(LessonNotFoundException.class, () -> lessonService.getLessonByName(lesson.getName()));
     }
 }

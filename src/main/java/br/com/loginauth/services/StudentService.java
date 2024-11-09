@@ -146,7 +146,6 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
     public SchoolClassDTO getSchoolClassByStudentCPF(String studentCpf) {
-        // Busca o aluno pelo CPF
         Student student = (Student) studentRepository.findByCpf(studentCpf)
                 .orElseThrow(() -> new StudentNotFoundException("Student not found with CPF " + studentCpf));
 
