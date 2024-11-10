@@ -1,4 +1,3 @@
-// LessonConflictException.java
 
 package br.com.loginauth.exceptions;
 
