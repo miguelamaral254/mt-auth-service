@@ -32,7 +32,6 @@ public class ParentService {
             throw new UserAlreadyExistsException("User already exists");
         }
 
-        // Busca e valida cada estudante a partir da lista de CPFs fornecidos
         List<Student> students = body.studentCpfs().stream()
                 .map(cpf -> {
                     Optional<User> studentUser = repository.findByCpf(cpf);
@@ -54,7 +53,7 @@ public class ParentService {
         newParent.setBirthDate(Date.valueOf(body.birthDate()));
         newParent.setAddress(body.address());
         newParent.setPhone(body.phone());
-        newParent.setStudents(students);  // Define a lista de estudantes
+        newParent.setStudents(students);
 
         repository.save(newParent);
     }
@@ -74,7 +73,6 @@ public class ParentService {
             parent.setAddress(body.address());
             parent.setPhone(body.phone());
 
-            // Atualiza a lista de estudantes
             List<Student> students = body.studentCpfs().stream()
                     .map(studentCpf -> {
                         Optional<User> studentUser = repository.findByCpf(studentCpf);

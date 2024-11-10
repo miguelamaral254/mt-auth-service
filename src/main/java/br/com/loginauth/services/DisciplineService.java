@@ -56,7 +56,6 @@ public class DisciplineService {
             throw new StudentNotFoundException("Student not found with CPF " + cpf);
         }
 
-        // Obtendo as lições associadas ao aluno
         List<Lesson> lessons = lessonRepository.findAll();
 
         return lessons.stream()
@@ -65,7 +64,7 @@ public class DisciplineService {
                 .map(lesson -> new DisciplineDTO(
                         lesson.getDiscipline().getId(),
                         lesson.getDiscipline().getName(),
-                        lesson.getDiscipline().getWorkload(), // Adicionando carga horária
+                        lesson.getDiscipline().getWorkload(),
                         lesson.getDiscipline().getDescription()
                 ))
                 .distinct()

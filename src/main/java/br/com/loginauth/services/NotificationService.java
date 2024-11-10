@@ -30,7 +30,7 @@ public class NotificationService {
         for (User user : usersWithRole) {
             Notification notification = new Notification();
 
-            notification.setHeader(header); // Set the header
+            notification.setHeader(header);
             notification.setMessage(message);
             notification.setTimestamp(LocalDateTime.now());
             notification.setUser(user);
@@ -58,6 +58,11 @@ public class NotificationService {
                 .orElseThrow(() -> new NotificationNotFoundException("Notification not found with id " + request.id()));
         notification.setRead(request.read());
         notificationRepository.save(notification);
-        return new NotificationDTO(notification.getId(), notification.getHeader(), notification.getMessage(), notification.getTimestamp(), request.read());
+        return new NotificationDTO(
+                notification.getId(),
+                notification.getHeader(),
+                notification.getMessage(),
+                notification.getTimestamp(),
+                request.read());
     }
 }

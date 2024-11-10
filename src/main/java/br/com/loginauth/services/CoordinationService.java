@@ -54,11 +54,9 @@ public class CoordinationService {
     public void updateCoordination(String cpf, CoordinationDTO body) {
         Optional<User> existingUser = userRepository.findByCpf(cpf);
 
-        // Verifica se o usuário existe e é do tipo 'Coordination'
         if (existingUser.isPresent() && existingUser.get() instanceof Coordination) {
             Coordination coordination = (Coordination) existingUser.get();
 
-            // Atualiza os campos da Coordination com base nos dados do DTO
             coordination.setName(body.name());
             coordination.setEmail(body.email());
             coordination.setActive(body.active());
@@ -67,10 +65,8 @@ public class CoordinationService {
             coordination.setPhone(body.phone());
             coordination.setRegistration(body.registration());
 
-            // Salva as alterações no repositório
             coordinationRepository.save(coordination);
         } else {
-            // Lança a exceção personalizada caso não encontre a Coordination
             throw new CoordinationNotFoundException("Coordination not found for CPF: " + cpf);
         }
     }

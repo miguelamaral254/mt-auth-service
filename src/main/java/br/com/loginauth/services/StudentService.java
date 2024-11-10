@@ -118,13 +118,13 @@ public class StudentService {
                                 lesson.getSchoolClass().getCode(),
                                 lesson.getSchoolClass().getTechnicalCourse(),
                                 lesson.getSchoolClass().getYear(),
-                                lesson.getSchoolClass().getDate() // Se aplicável
+                                lesson.getSchoolClass().getDate()
                         ),
                         new DisciplineDTO(
                                 lesson.getDiscipline().getId(),
                                 lesson.getDiscipline().getName(),
-                                lesson.getDiscipline().getWorkload(), // Se aplicável
-                                lesson.getDiscipline().getDescription() // Se aplicável
+                                lesson.getDiscipline().getWorkload(),
+                                lesson.getDiscipline().getDescription()
                         ),
                         new StudentResponseDTO(
                                 student.getCpf(),

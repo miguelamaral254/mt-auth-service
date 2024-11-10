@@ -21,7 +21,6 @@ public class NotificationController {
 
     @PostMapping("/send")
     public ResponseEntity<String> sendNotificationToRole(@RequestBody SendNotificationRequestDTO request) {
-        // Assuming SendNotificationRequestDTO now contains 'header' field
         notificationService.sendNotificationToRole(request.role(), request.header(), request.message());
         return ResponseEntity.ok("Notificação enviada para o papel: " + request.role());
     }

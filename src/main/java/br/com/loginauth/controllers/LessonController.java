@@ -33,7 +33,7 @@ public class LessonController {
             LessonDTO lessonDTO = lessonService.getLessonById(id);
             return ResponseEntity.ok(lessonDTO);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build(); // Handle the exception as needed
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -48,9 +48,9 @@ public class LessonController {
             LessonDTO lessonDTO = lessonService.getLessonByName(name);
             return ResponseEntity.ok(lessonDTO);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build(); // Retorno de erro 404
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build(); // Captura de exceções gerais
+            return ResponseEntity.internalServerError().build();
         }
     }
 

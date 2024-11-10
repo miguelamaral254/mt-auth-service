@@ -11,7 +11,6 @@ import br.com.loginauth.repositories.ProfessorRepository;
 import br.com.loginauth.repositories.UserRepository;
 import br.com.loginauth.exceptions.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -83,7 +82,7 @@ public class ProfessorService {
     }
     public List<Professor> findAllProfessors() {
         return userRepository.findAll().stream()
-                .filter(user -> user.getRole() == Role.PROFESSOR) // Filtra os professores
+                .filter(user -> user.getRole() == Role.PROFESSOR)
                 .map(user -> {
                     Professor professor = new Professor();
                     professor.setCpf(user.getCpf());
@@ -92,28 +91,25 @@ public class ProfessorService {
                     professor.setPassword(user.getPassword());
                     professor.setActive(user.isActive());
                     professor.setCreateDate(user.getCreateDate());
-                    // Aqui você pode setar os outros atributos do professor se necessário
                     return professor;
                 })
                 .collect(Collectors.toList());
     }
 
     public List<DisciplineWithClassDTO> getDisciplinesByProfessorCpf(String cpf) {
-        // Verifica se o professor existe
         Optional<User> professorOpt = professorRepository.findByCpf(cpf);
         if (professorOpt.isEmpty()) {
             throw new ProfessorNotFoundException("Professor not found with CPF " + cpf);
         }
 
-        // Obtendo as lições (lessons) associadas ao professor
         List<Lesson> lessons = lessonRepository.findAll();
 
         return lessons.stream()
-                .filter(lesson -> lesson.getProfessor().getCpf().equals(cpf)) // Filtra pelas lições associadas ao professor
+                .filter(lesson -> lesson.getProfessor().getCpf().equals(cpf))
                 .map(lesson -> new DisciplineWithClassDTO(
                         lesson.getDiscipline().getId(),
                         lesson.getDiscipline().getName(),
-                        lesson.getDiscipline().getWorkload(), // Adicionando carga horária
+                        lesson.getDiscipline().getWorkload(),
                         lesson.getDiscipline().getDescription(),
                         new SchoolClassDTO(
                                 lesson.getSchoolClass().getId(),
@@ -122,38 +118,33 @@ public class ProfessorService {
                                 lesson.getSchoolClass().getCode(),
                                 lesson.getSchoolClass().getTechnicalCourse(),
                                 lesson.getSchoolClass().getYear(),
-                                lesson.getSchoolClass().getDate() // Assumindo que getDate retorna uma data válida
+                                lesson.getSchoolClass().getDate()
                         )
                 ))
                 .distinct()
                 .collect(Collectors.toList());
     }
     public List<LessonDTO> getLessonsByProfessorCpf(String cpf) {
-        // Verifica se o professor existe
         Optional<User> professorOpt = professorRepository.findByCpf(cpf);
         if (professorOpt.isEmpty()) {
             throw new ProfessorNotFoundException("Professor not found with CPF " + cpf);
         }
 
-        // Obtém o professor (User)
         User professor = professorOpt.get();
 
-        // Cria o ProfessorResponseDTO
         ProfessorResponseDTO professorResponse = new ProfessorResponseDTO(
                 professor.getName(),
                 professor.getCpf()
         );
 
-        // Filtra as lições associadas ao professor pelo CPF
         List<Lesson> lessons = lessonRepository.findAll().stream()
                 .filter(lesson -> lesson.getProfessor().getCpf().equals(cpf))
                 .collect(Collectors.toList());
 
-        // Mapeia as lições para o DTO correspondente
         return lessons.stream()
                 .map(lesson -> new LessonDTO(
                         lesson.getId(),
-                        lesson.getName(), // Presumindo que Lesson possui um método getName()
+                        lesson.getName(),
                         new SchoolClassDTO(
                                 lesson.getSchoolClass().getId(),
                                 lesson.getSchoolClass().getLetter(),
@@ -161,19 +152,19 @@ public class ProfessorService {
                                 lesson.getSchoolClass().getCode(),
                                 lesson.getSchoolClass().getTechnicalCourse(),
                                 lesson.getSchoolClass().getYear(),
-                                lesson.getSchoolClass().getDate() // Se aplicável
+                                lesson.getSchoolClass().getDate()
                         ),
                         new DisciplineDTO(
                                 lesson.getDiscipline().getId(),
                                 lesson.getDiscipline().getName(),
-                                lesson.getDiscipline().getWorkload(), // Se aplicável
-                                lesson.getDiscipline().getDescription() // Se aplicável
+                                lesson.getDiscipline().getWorkload(),
+                                lesson.getDiscipline().getDescription()
                         ),
-                        professorResponse, // Utiliza o DTO de resposta do professor
-                        lesson.getWeekDay(), // Presumindo que Lesson possui um método getWeekDay()
-                        lesson.getStartTime(), // Presumindo que Lesson possui um método getStartTime()
-                        lesson.getEndTime(), // Presumindo que Lesson possui um método getEndTime()
-                        lesson.getRoom() // Presumindo que Lesson possui um método getRoom()
+                        professorResponse,
+                        lesson.getWeekDay(),
+                        lesson.getStartTime(),
+                        lesson.getEndTime(),
+                        lesson.getRoom()
                 ))
                 .collect(Collectors.toList());
     }
