@@ -26,27 +26,25 @@ public class LessonService {
     @Autowired
     private SchoolClassRepository schoolClassRepository;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
     public LessonDTO createLesson(LessonDTO lessonDTO) {
         checkForConflicts(lessonDTO);
-
         Lesson lesson = mapToEntity(new Lesson(), lessonDTO);
         Lesson savedLesson = lessonRepository.save(lesson);
-
         return mapToDTO(savedLesson);
     }
 
     private void checkForConflicts(LessonDTO lessonDTO) {
         Optional<Lesson> existingLessonByClass = lessonRepository.findByWeekDayAndStartTimeAndSchoolClassId(
                 lessonDTO.weekDay(), lessonDTO.startTime(), lessonDTO.schoolClass().id());
-
         if (existingLessonByClass.isPresent()) {
             throw new LessonConflictException("Já existe uma aula para a turma no dia "
                     + lessonDTO.weekDay() + " às " + lessonDTO.startTime() + " para a turma " + lessonDTO.schoolClass().id());
         }
-
         Optional<Lesson> existingLessonByProfessor = lessonRepository.findByWeekDayAndStartTimeAndProfessorCpf(
                 lessonDTO.weekDay(), lessonDTO.startTime(), lessonDTO.professor().cpf());
-
         if (existingLessonByProfessor.isPresent()) {
             throw new LessonConflictException("O professor " + lessonDTO.professor().cpf() +
                     " já possui uma aula no dia " + lessonDTO.weekDay() + " às " + lessonDTO.startTime());
@@ -56,13 +54,10 @@ public class LessonService {
     private Lesson mapToEntity(Lesson lesson, LessonDTO lessonDTO) {
         Discipline discipline = disciplineRepository.findById(lessonDTO.discipline().id())
                 .orElseThrow(() -> new DisciplineNotFoundException("Disciplina não encontrada com o ID " + lessonDTO.discipline().id()));
-
         Professor professor = (Professor) professorRepository.findByCpf(lessonDTO.professor().cpf())
                 .orElseThrow(() -> new ProfessorNotFoundException("Professor não encontrado com o CPF " + lessonDTO.professor().cpf()));
-
         SchoolClass schoolClass = schoolClassRepository.findById(lessonDTO.schoolClass().id())
                 .orElseThrow(() -> new SchoolClassNotFoundException("Turma não encontrada com o ID " + lessonDTO.schoolClass().id()));
-
         lesson.setName(lessonDTO.name());
         lesson.setWeekDay(lessonDTO.weekDay());
         lesson.setStartTime(lessonDTO.startTime());
@@ -71,7 +66,6 @@ public class LessonService {
         lesson.setDiscipline(discipline);
         lesson.setProfessor(professor);
         lesson.setSchoolClass(schoolClass);
-
         return lesson;
     }
 
@@ -127,10 +121,44 @@ public class LessonService {
         Lesson existingLesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new LessonNotFoundException("Aula não encontrada com o ID " + id));
 
-        checkForConflicts(lessonDTO);
-        Lesson updatedLesson = mapToEntity(existingLesson, lessonDTO);
-        lessonRepository.save(updatedLesson);
+        existingLesson.setName(lessonDTO.name());
+        existingLesson.setWeekDay(lessonDTO.weekDay());
+        existingLesson.setStartTime(lessonDTO.startTime());
+        existingLesson.setEndTime(lessonDTO.endTime());
+        existingLesson.setRoom(lessonDTO.room());
 
+        if (lessonDTO.schoolClass() != null && lessonDTO.schoolClass().id() != null) {
+            SchoolClass schoolClass = schoolClassRepository.findById(lessonDTO.schoolClass().id())
+                    .orElseThrow(() -> new SchoolClassNotFoundException("Turma não encontrada com o ID " + lessonDTO.schoolClass().id()));
+            existingLesson.setSchoolClass(schoolClass);
+        }
+
+        if (lessonDTO.discipline() != null && lessonDTO.discipline().id() != null) {
+            Discipline discipline = disciplineRepository.findById(lessonDTO.discipline().id())
+                    .orElseThrow(() -> new DisciplineNotFoundException("Disciplina não encontrada com o ID " + lessonDTO.discipline().id()));
+            existingLesson.setDiscipline(discipline);
+        }
+
+        if (lessonDTO.professor() != null && lessonDTO.professor().cpf() != null) {
+            Professor professor = (Professor) professorRepository.findByCpf(lessonDTO.professor().cpf())
+                    .orElseThrow(() -> new ProfessorNotFoundException("Professor não encontrado com o CPF " + lessonDTO.professor().cpf()));
+            existingLesson.setProfessor(professor);
+        }
+
+        Lesson updatedLesson = lessonRepository.save(existingLesson);
         return mapToDTO(updatedLesson);
+    }
+    public List<LessonDTO> getLessonsByStudentAndClass(String cpf, Long schoolClassId) {
+        SchoolClass schoolClass = schoolClassRepository.findById(schoolClassId)
+                .orElseThrow(() -> new SchoolClassNotFoundException("SchoolClass not found with id " + schoolClassId));
+        Student student = (Student) studentRepository.findByCpf(cpf)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found with CPF " + cpf));
+        if (!schoolClass.getStudents().contains(student)) {
+            throw new StudentNotFoundException("Student with CPF " + cpf + " is not enrolled in the class with id " + schoolClassId);
+        }
+        return lessonRepository.findAll().stream()
+                .filter(lesson -> lesson.getSchoolClass().getId().equals(schoolClassId))
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 }

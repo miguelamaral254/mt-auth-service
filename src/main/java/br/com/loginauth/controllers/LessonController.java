@@ -2,6 +2,10 @@ package br.com.loginauth.controllers;
 
 import br.com.loginauth.dto.LessonDTO;
 
+import br.com.loginauth.exceptions.DisciplineNotFoundException;
+import br.com.loginauth.exceptions.LessonNotFoundException;
+import br.com.loginauth.exceptions.ProfessorNotFoundException;
+import br.com.loginauth.exceptions.SchoolClassNotFoundException;
 import br.com.loginauth.services.LessonService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -59,11 +63,26 @@ public class LessonController {
         try {
             LessonDTO updatedLesson = lessonService.updateLesson(id, lessonDTO);
             return ResponseEntity.ok(updatedLesson);
-        } catch (EntityNotFoundException e) {
+        } catch (LessonNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (DisciplineNotFoundException | ProfessorNotFoundException | SchoolClassNotFoundException e) {
+            return ResponseEntity.badRequest().body(null);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build(); 
+            return ResponseEntity.internalServerError().build();
         }
     }
 
+    @GetMapping("/student/{cpf}/class/{schoolClassId}")
+    public ResponseEntity<List<LessonDTO>> getLessonsByStudentAndClass(
+            @PathVariable String cpf,
+            @PathVariable Long schoolClassId) {
+        try {
+            List<LessonDTO> lessons = lessonService.getLessonsByStudentAndClass(cpf, schoolClassId);
+            return ResponseEntity.ok(lessons);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

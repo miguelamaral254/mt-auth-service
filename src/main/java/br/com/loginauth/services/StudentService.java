@@ -145,26 +145,31 @@ public class StudentService {
                 .distinct()
                 .collect(Collectors.toList());
     }
-    public SchoolClassDTO getSchoolClassByStudentCPF(String studentCpf) {
+    public List<SchoolClassDTO> getSchoolClassByStudentCPF(String studentCpf) {
         Student student = (Student) studentRepository.findByCpf(studentCpf)
                 .orElseThrow(() -> new StudentNotFoundException("Student not found with CPF " + studentCpf));
 
-
-        SchoolClass schoolClass = schoolClassRepository.findAll().stream()
+        // Filtra todas as turmas em que o estudante está matriculado
+        List<SchoolClass> schoolClasses = schoolClassRepository.findAll().stream()
                 .filter(sc -> sc.getStudents().contains(student))
-                .findFirst()
-                .orElseThrow(() -> new SchoolClassNotFoundException("No school class found for student with CPF " + studentCpf));
+                .collect(Collectors.toList());
 
-        return new SchoolClassDTO(
-                schoolClass.getId(),
-                schoolClass.getLetter(),
-                schoolClass.getShift(),
-                schoolClass.getCode(),
-                schoolClass.getTechnicalCourse(),
-                schoolClass.getYear(),
-                schoolClass.getDate()
-        );
+        if (schoolClasses.isEmpty()) {
+            throw new SchoolClassNotFoundException("No school class found for student with CPF " + studentCpf);
+        }
+
+        // Mapeia as turmas para o formato DTO
+        return schoolClasses.stream()
+                .map(schoolClass -> new SchoolClassDTO(
+                        schoolClass.getId(),
+                        schoolClass.getLetter(),
+                        schoolClass.getShift(),
+                        schoolClass.getCode(),
+                        schoolClass.getTechnicalCourse(),
+                        schoolClass.getYear(),
+                        schoolClass.getDate()
+                ))
+                .collect(Collectors.toList());
     }
-
 
 }

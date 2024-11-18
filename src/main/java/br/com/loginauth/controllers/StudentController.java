@@ -60,14 +60,13 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
     @GetMapping("/{cpf}/school-class")
-    public ResponseEntity<SchoolClassDTO> getSchoolClassByStudentCpf(@PathVariable String cpf) {
+    public ResponseEntity<List<SchoolClassDTO>> getSchoolClassByStudentCpf(@PathVariable String cpf) {
         try {
-            SchoolClassDTO schoolClass = studentService.getSchoolClassByStudentCPF(cpf);
-            return ResponseEntity.ok(schoolClass);
+            List<SchoolClassDTO> schoolClasses = studentService.getSchoolClassByStudentCPF(cpf);
+            return ResponseEntity.ok(schoolClasses);
         } catch (StudentNotFoundException | SchoolClassNotFoundException e) {
             return ResponseEntity.badRequest().body(null);
         }
     }
-
 
 }
