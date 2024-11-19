@@ -95,7 +95,8 @@ public class LessonService {
                 lesson.getWeekDay(),
                 lesson.getStartTime(),
                 lesson.getEndTime(),
-                lesson.getRoom()
+                lesson.getRoom(),
+                lesson.getCreatedAt()
         );
     }
 

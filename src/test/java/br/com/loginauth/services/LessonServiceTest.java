@@ -58,7 +58,8 @@ class LessonServiceTest {
                 Week.MONDAY,
                 Schedule.EIGHT_TWENTY,
                 Schedule.NINE_TEN,
-                "Room 101"
+                "Room 101",
+                lesson.getCreatedAt()
         );
 
         lesson = new Lesson(1L, "Math Class", schoolClass, discipline, professor, Week.MONDAY, Schedule.EIGHT_TWENTY, Schedule.NINE_TEN, "Room 101", java.time.LocalDateTime.now());

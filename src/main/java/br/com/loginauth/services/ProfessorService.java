@@ -164,7 +164,8 @@ public class ProfessorService {
                         lesson.getWeekDay(),
                         lesson.getStartTime(),
                         lesson.getEndTime(),
-                        lesson.getRoom()
+                        lesson.getRoom(),
+                        lesson.getCreatedAt()
                 ))
                 .collect(Collectors.toList());
     }
