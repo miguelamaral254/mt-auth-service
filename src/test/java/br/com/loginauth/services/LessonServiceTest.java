@@ -49,6 +49,9 @@ class LessonServiceTest {
         professor = new Professor();
         professor.setCpf("12345678900");
         professor.setName("Dr. John Doe");
+
+        lesson = new Lesson(1L, "Math Class", schoolClass, discipline, professor, Week.MONDAY, Schedule.EIGHT_TWENTY, Schedule.NINE_TEN, "Room 101", java.time.LocalDateTime.now());
+
         lessonDTO = new LessonDTO(
                 null,
                 "Math Class",
@@ -61,8 +64,6 @@ class LessonServiceTest {
                 "Room 101",
                 lesson.getCreatedAt()
         );
-
-        lesson = new Lesson(1L, "Math Class", schoolClass, discipline, professor, Week.MONDAY, Schedule.EIGHT_TWENTY, Schedule.NINE_TEN, "Room 101", java.time.LocalDateTime.now());
     }
 
     @Test
