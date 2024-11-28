@@ -2,13 +2,13 @@ package br.com.loginauth.controllers;
 
 import br.com.loginauth.domain.entities.Grade;
 import br.com.loginauth.dto.CreateGradeDTO;
+import br.com.loginauth.exceptions.StudentNotFoundException;
 import br.com.loginauth.services.GradeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("/grades")
 public class GradeController {
@@ -21,39 +21,49 @@ public class GradeController {
 
     // Endpoint para criar uma nova grade
     @PostMapping
-    public ResponseEntity<Grade> createGrade(@RequestBody CreateGradeDTO createGradeDTO) {
+    public ResponseEntity<?> createGrade(@RequestBody CreateGradeDTO createGradeDTO) {
         try {
             Grade grade = gradeService.createGrade(createGradeDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(grade);
+        } catch (StudentNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao criar ou atualizar a nota.");
         }
     }
 
-    // Endpoint para obter todas as grades
     @GetMapping
     public ResponseEntity<List<Grade>> getAllGrades() {
         List<Grade> grades = gradeService.getAllGrades();
         return ResponseEntity.ok(grades);
     }
 
-    // Endpoint para obter as grades por CPF do estudante
     @GetMapping("/student/{cpf}")
-    public ResponseEntity<List<Grade>> getGradesByStudentCpf(@PathVariable String cpf) {
-        List<Grade> grades = gradeService.getGradesByStudentCpf(cpf);
-        if (grades.isEmpty()) {
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<?> getGradesByStudentCpf(@PathVariable String cpf) {
+        try {
+            List<Grade> grades = gradeService.getGradesByStudentCpf(cpf);
+            if (grades.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(grades);
+        } catch (StudentNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return ResponseEntity.ok(grades);
     }
+
+    // Endpoint para obter as grades por CPF do estudante e disciplina
     @GetMapping("/student/{cpf}/discipline/{disciplineId}")
-    public ResponseEntity<List<Grade>> getGradesByStudentCpfAndDiscipline(
+    public ResponseEntity<?> getGradesByStudentCpfAndDiscipline(
             @PathVariable String cpf,
             @PathVariable Long disciplineId) {
-        List<Grade> grades = gradeService.getGradesByStudentCpfAndDiscipline(cpf, disciplineId);
-        if (grades.isEmpty()) {
-            return ResponseEntity.noContent().build();
+        try {
+            List<Grade> grades = gradeService.getGradesByStudentCpfAndDiscipline(cpf, disciplineId);
+            if (grades.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(grades);
+        } catch (StudentNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return ResponseEntity.ok(grades);
     }
 }
