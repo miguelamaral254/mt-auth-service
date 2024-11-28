@@ -104,4 +104,9 @@ public class ParentService {
         parent.getStudents().add(student);
         repository.save(parent);
     }
+    public List<User> findAllParents() {
+        return repository.findAll().stream()
+                .filter(user -> user instanceof Parent)
+                .collect(Collectors.toList());
+    }
 }

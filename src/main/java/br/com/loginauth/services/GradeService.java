@@ -1,8 +1,6 @@
 package br.com.loginauth.services;
 
-import br.com.loginauth.domain.entities.Grade;
-import br.com.loginauth.domain.entities.Notification;
-import br.com.loginauth.domain.entities.User;
+import br.com.loginauth.domain.entities.*;
 import br.com.loginauth.domain.enums.Letter;
 import br.com.loginauth.dto.CreateGradeDTO;
 import br.com.loginauth.exceptions.StudentNotFoundException;
@@ -23,16 +21,17 @@ public class GradeService {
     private final StudentRepository studentRepository;
     private final NotificationRepository notificationRepository;
     private final DisciplineService disciplineService;
+    private final ParentService parentService;
 
-    public GradeService(GradeRepository gradeRepository, StudentRepository studentRepository, NotificationRepository notificationRepository, DisciplineService disciplineService) {
+    public GradeService(GradeRepository gradeRepository, StudentRepository studentRepository, NotificationRepository notificationRepository, DisciplineService disciplineService, ParentService parentService) {
         this.gradeRepository = gradeRepository;
         this.studentRepository = studentRepository;
         this.notificationRepository = notificationRepository;
         this.disciplineService = disciplineService;
+        this.parentService = parentService;
     }
 
     public Grade createGrade(CreateGradeDTO createGradeDTO) {
-        // Verifica se a nota já existe
         List<Grade> existingGrades = gradeRepository.findByStudentCpfAndDisciplineIdAndEvaluationType(
                 createGradeDTO.studentCpf(),
                 createGradeDTO.disciplineId(),
@@ -54,27 +53,28 @@ public class GradeService {
         }
         Grade savedGrade = gradeRepository.save(grade);
 
-        // Converte nota para conceito (Letter enum)
         Letter concept = convertScoreToLetter(createGradeDTO.evaluation());
         String disciplineName = disciplineService.getDisciplineById(createGradeDTO.disciplineId()).getName();
 
         studentRepository.findByCpf(createGradeDTO.studentCpf()).ifPresentOrElse(student -> {
-            String header = "Nova avaliação atribuída";
-            String message = String.format(
+            String studentHeader = "Nova avaliação atribuída";
+            String studentMessage = String.format(
                     "Seu novo conceito da %s na disciplina %s agora é %s.",
                     createGradeDTO.evaluationType(),
                     disciplineName,
                     concept
             );
 
-            Notification notification = new Notification();
-            notification.setHeader(header);
-            notification.setMessage(message);
-            notification.setTimestamp(LocalDateTime.now());
-            notification.setUser(student);
-            notification.setRead(false);
+            Notification studentNotification = new Notification();
+            studentNotification.setHeader(studentHeader);
+            studentNotification.setMessage(studentMessage);
+            studentNotification.setTimestamp(LocalDateTime.now());
+            studentNotification.setUser(student);
+            studentNotification.setRead(false);
 
-            notificationRepository.save(notification);
+            notificationRepository.save(studentNotification);
+
+            notifyParents((Student) student, createGradeDTO, concept, disciplineName);
         }, () -> {
             throw new StudentNotFoundException("Student not found with CPF " + createGradeDTO.studentCpf());
         });
@@ -82,7 +82,6 @@ public class GradeService {
         return savedGrade;
     }
 
-    // Converte nota para conceito (Letter enum)
     private Letter convertScoreToLetter(double score) {
         if (score >= 9) {
             return Letter.A;
@@ -96,6 +95,39 @@ public class GradeService {
             return Letter.E;
         } else {
             return Letter.F;
+        }
+    }
+
+    private void notifyParents(Student student, CreateGradeDTO createGradeDTO, Letter concept, String disciplineName) {
+        List<User> allUsers = parentService.findAllParents();
+
+        List<Parent> parents = allUsers.stream()
+                .filter(user -> user instanceof Parent)
+                .map(user -> (Parent) user)
+                .filter(parent -> parent.getStudents().stream()
+                        .anyMatch(st -> st.getCpf().equals(student.getCpf())))
+                .collect(Collectors.toList());
+
+        if (!parents.isEmpty()) {
+            for (Parent parent : parents) {
+                String parentHeader = "Avaliação do estudante";
+                String parentMessage = String.format(
+                        "O estudante %s recebeu o conceito %s na avaliação %s da disciplina %s.",
+                        student.getName(),
+                        concept,
+                        createGradeDTO.evaluationType(),
+                        disciplineName
+                );
+
+                Notification parentNotification = new Notification();
+                parentNotification.setHeader(parentHeader);
+                parentNotification.setMessage(parentMessage);
+                parentNotification.setTimestamp(LocalDateTime.now());
+                parentNotification.setUser(parent);
+                parentNotification.setRead(false);
+
+                notificationRepository.save(parentNotification);
+            }
         }
     }
     public List<Grade> getAllGrades() {

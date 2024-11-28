@@ -8,4 +8,5 @@ import java.util.Optional;
 @Repository
 public interface ParentRepository extends UserRepository {
     Optional<User> findByCpf(String cpf);
+
 }
