@@ -1,5 +1,6 @@
 package br.com.loginauth.services;
 
+import br.com.loginauth.domain.entities.Lesson;
 import br.com.loginauth.domain.entities.SchoolClass;
 import br.com.loginauth.domain.entities.Student;
 import br.com.loginauth.dto.SchoolClassDTO;
@@ -7,6 +8,7 @@ import br.com.loginauth.dto.StudentResponseDTO;
 import br.com.loginauth.exceptions.SchoolClassNotFoundException;
 import br.com.loginauth.exceptions.StudentAlreadyExistsException;
 import br.com.loginauth.exceptions.StudentNotFoundException;
+import br.com.loginauth.repositories.LessonRepository;
 import br.com.loginauth.repositories.SchoolClassRepository;
 import br.com.loginauth.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class SchoolClassService {
 
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private LessonRepository lessonRepository;
 
     public SchoolClass createClass(SchoolClassDTO schoolClassDTO) {
         SchoolClass schoolClass = new SchoolClass();
@@ -37,17 +41,27 @@ public class SchoolClassService {
     }
 
     public SchoolClass addStudentToClass(Long schoolClassId, String studentCpf) {
+        // Busca a turma pelo ID
         SchoolClass schoolClass = schoolClassRepository.findById(schoolClassId)
                 .orElseThrow(() -> new SchoolClassNotFoundException("SchoolClass not found with id " + schoolClassId));
 
+        // Busca o estudante pelo CPF
         Student student = (Student) studentRepository.findByCpf(studentCpf)
                 .orElseThrow(() -> new StudentNotFoundException("Student not found with CPF " + studentCpf));
 
+        // Verifica se o estudante já está na turma
         if (schoolClass.getStudents().stream().anyMatch(s -> s.getCpf().equals(studentCpf))) {
             throw new StudentAlreadyExistsException("Student already exists in this class with CPF " + studentCpf);
         }
 
         schoolClass.getStudents().add(student);
+        List<Lesson> lessons = lessonRepository.findBySchoolClassId(schoolClassId);
+        if (lessons != null && !lessons.isEmpty()) {
+            for (Lesson lesson : lessons) {
+                System.out.println("Lesson " + lesson.getName() + " is already associated with the class.");
+            }
+        }
+
         return schoolClassRepository.save(schoolClass);
     }
 

@@ -6,7 +6,6 @@ import br.com.loginauth.domain.entities.Student;
 import br.com.loginauth.domain.entities.User;
 import br.com.loginauth.domain.enums.Role;
 import br.com.loginauth.dto.*;
-import br.com.loginauth.exceptions.ProfessorNotFoundException;
 import br.com.loginauth.exceptions.SchoolClassNotFoundException;
 import br.com.loginauth.exceptions.StudentNotFoundException;
 import br.com.loginauth.repositories.LessonRepository;
